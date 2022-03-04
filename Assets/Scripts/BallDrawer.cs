@@ -17,21 +17,39 @@ public class BallDrawer : MonoBehaviour
 
     private void Start()
     {
-        UpdateLevel(_ball.Level);
+        UpdateText();
     }
 
-    private void UpdateLevel(int level)
+    private void OnLevelUpdated(int _)
     {
-        _text.text = Mathf.Pow(2, level).ToString();
+        UpdateText();
+    }
+
+    private void UpdateText()
+    {
+        _text.text = Mathf.Pow(2, _ball.Level).ToString();
     }
 
     private void OnEnable()
     {
-        _ball.LevelUpdated += UpdateLevel;
+        _ball.LevelUpdated += OnLevelUpdated;
     }
 
     private void OnDisable()
     {
-        _ball.LevelUpdated -= UpdateLevel;
+        _ball.LevelUpdated -= OnLevelUpdated;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_text == null)
+            return;
+
+        bool ballIsNull = _ball == null;
+        if (ballIsNull)
+            _ball = GetComponent<Ball>();
+        UpdateText();
+        if (ballIsNull)
+            _ball = null;
     }
 }

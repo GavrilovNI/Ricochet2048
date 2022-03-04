@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,22 +5,74 @@ public class Map : MonoBehaviour
 {
     public static Map Instance { get; private set; }
 
+    public event System.Action Lost;
+    public event System.Action Won;
+    
+    private enum State
+    {
+        Playing,
+        Won,
+        Lost
+    }
+    private State _state;
+
     [SerializeField] private Ball _ballPrefab;
 
-    [SerializeField] private List<Ball> _balls = new List<Ball>();
-    [SerializeField] private List<Brick> _bricks = new List<Brick>();
+    [SerializeField] private BallContainer _balls;
+    [SerializeField] private BrickContainer _bricks;
 
-    public void Awake()
+    public BallContainer Balls => _balls;
+    public BrickContainer Bricks => _bricks;
+
+    private void Awake()
     {
         if (Instance != null)
             throw new System.Exception("Can't create second map, it should be a Singleton.");
         Instance = this;
+
+        _state = State.Playing;
+        UpdateState();
     }
 
-    public void RemoveBrick(Brick brick)
+    private void OnEnable()
     {
-        _bricks.Remove(brick);
+        _balls.Removed += OnBallRemoved;
+        _bricks.Removed += OnBrickRemoved;
+    }
+
+    private void OnDisable()
+    {
+        _balls.Removed -= OnBallRemoved;
+        _bricks.Removed -= OnBrickRemoved;
+    }
+
+    private void UpdateState()
+    {
+        if (_state != State.Playing)
+            return;
+        if (_bricks.Count == 0)
+        {
+            _state = State.Won;
+            Won?.Invoke();
+            return;
+        }
+        if (_balls.Count == 0)
+        {
+            _state = State.Lost;
+            Lost?.Invoke();
+            return;
+        }
+    }
+
+    private void OnBallRemoved(Ball ball)
+    {
+        GameObject.Destroy(ball.gameObject);
+        UpdateState();
+    }
+    private void OnBrickRemoved(Brick brick)
+    {
         GameObject.Destroy(brick.gameObject);
+        UpdateState();
     }
 
     public void ConvertBrickToBall(Brick brick)
@@ -30,12 +81,6 @@ public class Map : MonoBehaviour
         ball.Level = brick.Level;
         _balls.Add(ball);
 
-        RemoveBrick(brick);
-    }
-
-    public void RemoveBall(Ball ball)
-    {
-        _balls.Remove(ball);
-        GameObject.Destroy(ball.gameObject);
+        _bricks.Remove(brick);
     }
 }

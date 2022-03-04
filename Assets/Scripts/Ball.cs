@@ -18,7 +18,7 @@ public class Ball : MonoBehaviour
         set
         {
             if (value < 0)
-                throw new ArgumentOutOfRangeException("Level can't be less than 0.");
+                throw new Exception("Level can't be less than 0.");
             _level = value;
             LevelUpdated(_level);
         }
@@ -46,16 +46,16 @@ public class Ball : MonoBehaviour
         Level++;
     }
 
-    private void OnHittedObject(Collider2D collider)
+    private void OnHittedObject(GameObject gameObject)
     {
-        Brick brick = collider.GetComponentInParent<Brick>();
+        Brick brick = gameObject.GetComponentInParent<Brick>();
         if (brick == null)
             return;
 
         if(brick.Level == _level)
         {
             IncreaseLevel();
-            Map.Instance.RemoveBrick(brick);
+            Map.Instance.Bricks.Remove(brick);
         }
         else if(brick.Level < _level)
         {

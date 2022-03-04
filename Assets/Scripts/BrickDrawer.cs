@@ -17,6 +17,24 @@ public class BrickDrawer : MonoBehaviour
 
     private void Start()
     {
+        UpdateText();
+    }
+    [ExecuteInEditMode]
+    public void UpdateText()
+    {
         _text.text = Mathf.Pow(2, _brick.Level).ToString();
+    }
+    
+    private void OnDrawGizmos()
+    {
+        if (_text == null)
+            return;
+
+        bool brickIsNull = _brick == null;
+        if(brickIsNull)
+            _brick = GetComponent<Brick>();
+        UpdateText();
+        if (brickIsNull)
+            _brick = null;
     }
 }
