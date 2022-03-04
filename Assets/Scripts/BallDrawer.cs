@@ -20,14 +20,14 @@ public class BallDrawer : MonoBehaviour
         UpdateText();
     }
 
-    private void OnLevelUpdated(int _)
-    {
-        UpdateText();
-    }
-
     private void UpdateText()
     {
         _text.text = Mathf.Pow(2, _ball.Level).ToString();
+    }
+
+    private void OnLevelUpdated(Level _)
+    {
+        UpdateText();
     }
 
     private void OnEnable()

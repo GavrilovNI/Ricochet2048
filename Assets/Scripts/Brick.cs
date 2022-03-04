@@ -4,7 +4,17 @@ using UnityEngine;
 
 public class Brick : MonoBehaviour
 {
-    [SerializeField, Min(0)] private int _level;
+    public event System.Action<Level> LevelUpdated;
 
-    public int Level => _level;
+    [SerializeField] private Level _level;
+
+    public Level Level
+    {
+        get => _level;
+        set
+        {
+            _level = value;
+            LevelUpdated(_level);
+        }
+    }
 }

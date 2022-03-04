@@ -6,19 +6,17 @@ using UnityEngine;
 [RequireComponent(typeof(BallMover))]
 public class Ball : MonoBehaviour
 {
-    public event Action<int> LevelUpdated;
+    public event Action<Level> LevelUpdated;
 
     private BallMover _ballMover;
 
-    [SerializeField, Min(0)] private int _level;
+    [SerializeField] private Level _level;
 
-    public int Level
+    public Level Level
     {
         get => _level;
         set
         {
-            if (value < 0)
-                throw new Exception("Level can't be less than 0.");
             _level = value;
             LevelUpdated(_level);
         }
@@ -43,7 +41,7 @@ public class Ball : MonoBehaviour
 
     private void IncreaseLevel()
     {
-        Level++;
+        Level = (Level)(Level + 1);
     }
 
     private void OnHittedObject(GameObject gameObject)

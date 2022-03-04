@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VectorExtensions;
 
+[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Platform))]
 public class PlatformMover : MonoBehaviour
 {
     private Platform _platform;
+    private Rigidbody2D _rigidbody;
 
     [SerializeField] private Vector3 _from;
     [SerializeField] private Vector3 _to;
@@ -14,12 +17,24 @@ public class PlatformMover : MonoBehaviour
     private Vector3 MinPosition => _from + Vector3.right * _platform.Width / 2;
     private Vector3 MaxPosition => _to - Vector3.right * _platform.Width / 2;
 
-    private const string InputAxisName = "Horizontal";
+    public const string InputAxisName = "Horizontal";
     private float _input = 0;
+
+    public Vector3 From
+    {
+        get => _from;
+        set => _from = value;
+    }
+    public Vector3 To
+    {
+        get => _to;
+        set => _to = value;
+    }
 
     private void Awake()
     {
         _platform = GetComponent<Platform>();
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -55,7 +70,6 @@ public class PlatformMover : MonoBehaviour
             newPosition = Clamp(newPosition, MinPosition, MaxPosition);
         }
 
-        Vector3 delta = newPosition - transform.position;
-        transform.Translate(delta, Space.World);
+        _rigidbody.MovePosition(newPosition.XY());
     }
 }

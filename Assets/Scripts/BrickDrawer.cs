@@ -19,12 +19,27 @@ public class BrickDrawer : MonoBehaviour
     {
         UpdateText();
     }
-    [ExecuteInEditMode]
+
     public void UpdateText()
     {
         _text.text = Mathf.Pow(2, _brick.Level).ToString();
     }
-    
+
+    private void OnLevelUpdated(Level _)
+    {
+        UpdateText();
+    }
+
+    private void OnEnable()
+    {
+        _brick.LevelUpdated += OnLevelUpdated;
+    }
+
+    private void OnDisable()
+    {
+        _brick.LevelUpdated -= OnLevelUpdated;
+    }
+
     private void OnDrawGizmos()
     {
         if (_text == null)

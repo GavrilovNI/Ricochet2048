@@ -32,10 +32,13 @@ public class BallMover : MonoBehaviour
             Debug.LogWarning("Ball rotation must be frozen.");
         if (_rigidbody.simulated == false)
             Debug.LogWarning("Ball rigidbody must be simulated.");
+        if(_rigidbody.gravityScale != 0f)
+            Debug.LogWarning("Ball rigidbody gravityScale must be 0.");
     }
 
     private void FixedUpdate()
     {
+        //_rigidbody.AddForce(Direction * _speed, ForceMode2D.Impulse);
         _rigidbody.velocity = Direction * _speed;
     }
 
