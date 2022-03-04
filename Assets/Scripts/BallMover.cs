@@ -11,6 +11,17 @@ public class BallMover : MonoBehaviour
 
     [SerializeField, Min(0f)] private float _speed = 3;
 
+    private Vector3 Direction
+    {
+        get => transform.up;
+        set
+        {
+            float angle = Mathf.Atan2(value.y, value.x) * Mathf.Rad2Deg;
+            float eulerZ = angle - 90;
+            transform.rotation = Quaternion.Euler(0, 0, eulerZ);
+        }
+    }
+
     private Rigidbody2D _rigidbody;
 
     private void Awake()
@@ -25,7 +36,7 @@ public class BallMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rigidbody.velocity = transform.up * _speed;
+        _rigidbody.velocity = Direction * _speed;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -34,7 +45,8 @@ public class BallMover : MonoBehaviour
         foreach (var contact in collision.contacts)
             commonNormal += contact.normal;
         commonNormal.Normalize();
-        transform.up = Vector3.Reflect(transform.up, commonNormal);
+
+        Direction = Vector3.Reflect(transform.up, commonNormal);
 
         HittedObject?.Invoke(collision.gameObject);
     }
