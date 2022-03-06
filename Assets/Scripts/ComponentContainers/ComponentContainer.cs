@@ -7,11 +7,11 @@ public class ComponentContainer<T> : MonoBehaviour where T : Component
     public event System.Action<T> Added;
     public event System.Action<T> Removed;
 
-    public int Count => _component.Count;
+    public int Count => _components.Count;
 
     [SerializeField] private bool _addChildrenOnStart = true;
 
-    private HashSet<T> _component = new HashSet<T>();
+    private HashSet<T> _components = new HashSet<T>();
 
     private void Start()
     {
@@ -30,7 +30,7 @@ public class ComponentContainer<T> : MonoBehaviour where T : Component
 
     public bool Add(T component)
     {
-        bool added = _component.Add(component);
+        bool added = _components.Add(component);
         if(added)
         {
             component.transform.SetParent(transform, true);
@@ -41,7 +41,7 @@ public class ComponentContainer<T> : MonoBehaviour where T : Component
 
     public bool Remove(T component)
     {
-        bool removed =_component.Remove(component);
+        bool removed =_components.Remove(component);
         if(removed)
         {
             component.transform.SetParent(null, true);
@@ -52,6 +52,16 @@ public class ComponentContainer<T> : MonoBehaviour where T : Component
 
     public bool Contains(T component)
     {
-        return _component.Contains(component);
+        return _components.Contains(component);
+    }
+    
+    public void Clear()
+    {
+        foreach(var component in _components)
+        {
+            component.transform.SetParent(null, true);
+            Removed?.Invoke(component);
+        }
+        _components.Clear();
     }
 }

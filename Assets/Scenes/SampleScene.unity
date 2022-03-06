@@ -133,8 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 51298470}
   - component: {fileID: 51298469}
-  - component: {fileID: 51298472}
-  - component: {fileID: 51298471}
   - component: {fileID: 51298468}
   m_Layer: 0
   m_Name: BottomBallRemover
@@ -168,7 +166,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -1}
+  m_Offset: {x: 0, y: -0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -179,7 +177,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 1}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!4 &51298470
 Transform:
@@ -189,64 +187,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 51298467}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.9950438, z: 0}
-  m_LocalScale: {x: 4.1, y: 1, z: 1}
+  m_LocalPosition: {x: 2, y: -1, z: 0}
+  m_LocalScale: {x: 4, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 1133641576}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &51298471
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 51298467}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -1, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!61 &51298472
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 51298467}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 1, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!4 &52110237 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 301872463394710781, guid: 5ed2ef1339f85bf419f5ebc31c82b89d, type: 3}
@@ -349,7 +295,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -405,8 +351,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708747809}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.025, y: 0, z: 0}
-  m_LocalScale: {x: 0.05, y: 7.9900875, z: 1}
+  m_LocalPosition: {x: -0.025, y: 1.5, z: 0}
+  m_LocalScale: {x: 0.05, y: 5, z: 0}
   m_Children: []
   m_Father: {fileID: 931924846}
   m_RootOrder: 0
@@ -532,6 +478,7 @@ GameObject:
   - component: {fileID: 1133641576}
   - component: {fileID: 1133641575}
   - component: {fileID: 1133641577}
+  - component: {fileID: 1133641578}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -585,18 +532,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b88763b4f9ec394c901bc0021e651e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 519420031}
   _leftWall: {fileID: 708747810}
   _rightWall: {fileID: 1448049664}
   _topWall: {fileID: 1158922888}
-  _bottomBallRemover: {fileID: 51298468}
-  _wallsWidth: 0.05
-  _brickSize: 1
-  _mapWidthInBricks: 4
-  _brickPrefab: {fileID: 2056652937439842374, guid: 3004f70aab0e49346a5833c4435ae151, type: 3}
   _platform: {fileID: 1808796851}
-  _platformSpacingDown: 0.5
-  _platformSpacingUp: 0.5
+  _bottomBallRemover: {fileID: 51298468}
+  _brickPrefab: {fileID: 2056652937439842374, guid: 3004f70aab0e49346a5833c4435ae151, type: 3}
+  _wallsWidth: 0.05
+  _brickSize: {x: 1, y: 1}
+  _mapSizeInBricks: {x: 4, y: 4}
+  _platformSpacingAbove: 0.5
+  _platformSpacingUnder: 0.5
+--- !u!114 &1133641578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133641574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c499d4dd51dd750458876476cba9ac13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _createBrickButtonPrefab: {fileID: 8935833020948795081, guid: efbe18a5ae2c3894696380b9d52e4a68, type: 3}
+  _brickLevelerPrefab: {fileID: 588470982532476267, guid: 192a645433dc14844afdfb0c87b3b598, type: 3}
 --- !u!1 &1158922887
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,8 +583,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1158922887}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.020044, z: 0}
-  m_LocalScale: {x: 4.1, y: 0.05, z: 1}
+  m_LocalPosition: {x: 2, y: 4.025, z: 0}
+  m_LocalScale: {x: 4.1, y: 0.05, z: 0}
   m_Children: []
   m_Father: {fileID: 931924846}
   m_RootOrder: 2
@@ -777,8 +737,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448049663}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.025, y: 0, z: 0}
-  m_LocalScale: {x: 0.05, y: 7.9900875, z: 1}
+  m_LocalPosition: {x: 4.025, y: 1.5, z: 0}
+  m_LocalScale: {x: 0.05, y: 5, z: 0}
   m_Children: []
   m_Father: {fileID: 931924846}
   m_RootOrder: 1
@@ -999,7 +959,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1808796850}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.4950438, z: 0}
+  m_LocalPosition: {x: 2, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 1133641576}
@@ -1017,8 +977,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d661140749735344acd2c6d6e1e4316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _from: {x: -2.5, y: -4.8, z: 0}
-  _to: {x: 2.5, y: -4.8, z: 0}
+  _from: {x: 0, y: -0.5, z: 0}
+  _to: {x: 4, y: -0.5, z: 0}
   _speed: 3
 --- !u!1001 &301872463443527520
 PrefabInstance:

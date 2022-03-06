@@ -6,7 +6,7 @@ public class Level
 {
     [SerializeField, Min(0)] private int _level;
 
-    private Level(int level)
+    public Level(int level = 0)
     {
         if(level < 0)
             throw new ArgumentOutOfRangeException(nameof(level));
