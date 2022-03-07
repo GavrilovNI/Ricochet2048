@@ -106,6 +106,7 @@ public class MapEditor : MonoBehaviour
 
         CreateMissingBrickButtons();
         UpdateChangeSizeButtons();
+        UpdateButtons();
         UpdateCamera();
         _field.ConstructDefault();
     }
@@ -145,6 +146,7 @@ public class MapEditor : MonoBehaviour
                 break;
         }
         UpdateChangeSizeButtons();
+        UpdateButtons();
         UpdateCamera();
         _field.ConstructDefault();
     }
@@ -230,6 +232,13 @@ public class MapEditor : MonoBehaviour
             }
         }
     }
+    private void UpdateButtons()
+    {
+        foreach(var button in _brickButtons)
+        {
+            SetupButton(button.Value, button.Key);
+        }
+    }
     private BrickButton CreateButton(Vector2Int position, BrickButton prefab)
     {
         if(_brickButtons.ContainsKey(position))
@@ -237,16 +246,21 @@ public class MapEditor : MonoBehaviour
 
         Vector3 position3D = _field.GetBrickPosition(position);
         BrickButton brickButton = GameObject.Instantiate(prefab);
-        brickButton.transform.position = position3D;
-        brickButton.transform.rotation = Quaternion.identity;
-        brickButton.transform.SetParent(_brickButtonsParent, true);
-        brickButton.transform.SetGlobalScale(Settings.BrickSize);
+        SetupButton(brickButton, position);
 
         _brickButtons.Add(position, brickButton);
 
         brickButton.Switch.AddListener(() => SwitchButton(position));
 
         return brickButton;
+    }
+    private void SetupButton(BrickButton brickButton, Vector2Int position)
+    {
+        Vector3 position3D = _field.GetBrickPosition(position);
+        brickButton.transform.position = position3D;
+        brickButton.transform.rotation = Quaternion.identity;
+        brickButton.transform.SetParent(_brickButtonsParent, true);
+        brickButton.transform.SetGlobalScale(Settings.BrickSize);
     }
     private void SwitchButton(Vector2Int position)
     {
