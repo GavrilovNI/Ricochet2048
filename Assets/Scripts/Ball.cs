@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TransformExtensions;
 
 [RequireComponent(typeof(BallMover))]
 public class Ball : MonoBehaviour
@@ -11,6 +12,7 @@ public class Ball : MonoBehaviour
     private BallMover _ballMover;
 
     [SerializeField] private Level _level;
+    [SerializeField, Min(0f)] private float _radius = 0.15f;
 
     public Level Level
     {
@@ -21,12 +23,33 @@ public class Ball : MonoBehaviour
             LevelUpdated(_level);
         }
     }
+    public float Radius
+    {
+        get => _radius;
+        set
+        {
+            if(value < 0)
+                throw new ArgumentOutOfRangeException(nameof(Radius));
+            else
+            {
+                _radius = value;
+                UpdateRadius();
+            }
+        }
+    }
 
-    
+    private void UpdateRadius()
+    {
+        transform.SetGlobalScale(Vector3.one * _radius * 2f);
+    }
 
     private void Awake()
     {
         _ballMover = GetComponent<BallMover>();
+    }
+    private void Start()
+    {
+        UpdateRadius();
     }
 
     private void OnEnable()

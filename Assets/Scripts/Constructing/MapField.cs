@@ -14,6 +14,7 @@ public class MapField : MonoBehaviour
     [SerializeField] private Platform _platform;
     [SerializeField] private BallRemover _bottomBallRemover;
     [SerializeField] private Brick _brickPrefab;
+    [SerializeField] private Ball _ballPrefab;
 
     [SerializeField] private MapSettings _settings;
 
@@ -33,6 +34,16 @@ public class MapField : MonoBehaviour
     {
         ConstructDefault();
         //SpawnTestBricks();
+    }
+
+    [ContextMenu("Spawn Ball")]
+    public void SpawnBall()
+    {
+        Ball ball = Instantiate(_ballPrefab);
+        ball.transform.position = MapBounds.min + Settings.BallSpawnPosition.ToV3();
+        ball.transform.rotation = Quaternion.identity;
+        ball.Radius = Settings.BallRadius;
+        _map.Balls.Add(ball);
     }
 
     private void SpawnTestBricks()
@@ -87,6 +98,7 @@ public class MapField : MonoBehaviour
         Vector3 platformPosition = new Vector3(mapBounds.center.x,
                                                mapBounds.min.y - _settings.PlatformSpacingAbove);
         _platform.transform.position = platformPosition;
+        _platform.Width = Settings.PlatformWidth;
         PlatformMover platformMover = _platform.GetComponent<PlatformMover>();
         if(platformMover != null)
         {

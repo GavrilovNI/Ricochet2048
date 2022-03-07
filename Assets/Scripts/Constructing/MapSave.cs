@@ -16,6 +16,9 @@ public class MapSettings
     [SerializeField] private Vector2Int _mapSizeInBricks = Vector2Int.one * 4;
     [SerializeField, Min(0f)] private float _platformSpacingAbove = 0.5f;
     [SerializeField, Min(0f)] private float _platformSpacingUnder = 0.5f;
+    [SerializeField, Min(0f)] private float _platformWidth = 1;
+    [SerializeField] private Vector2 _ballSpawnPosition = new Vector2(2, 1);
+    [SerializeField] private float _ballRadius = 0.15f;
 
     public float WallsWidth
     {
@@ -24,7 +27,8 @@ public class MapSettings
         {
             if(value < 0.01f)
                 throw new System.ArgumentOutOfRangeException(nameof(WallsWidth));
-            _wallsWidth = value;
+            else
+                _wallsWidth = value;
         }
     }
     public Vector2 BrickSize
@@ -34,7 +38,8 @@ public class MapSettings
         {
             if(value.x <= 0f || value.y <= 0f)
                 throw new System.ArgumentOutOfRangeException(nameof(BrickSize));
-            _brickSize = value;
+            else
+                _brickSize = value;
         }
     }
     public Vector2Int MapSizeInBricks
@@ -44,7 +49,8 @@ public class MapSettings
         {
             if(value.x <= 0f || value.y <= 0f)
                 throw new System.ArgumentOutOfRangeException(nameof(MapSizeInBricks));
-            _mapSizeInBricks = value;
+            else
+                _mapSizeInBricks = value;
         }
     }
     public float PlatformSpacingAbove
@@ -54,7 +60,8 @@ public class MapSettings
         {
             if(value < 0f)
                 throw new System.ArgumentOutOfRangeException(nameof(PlatformSpacingAbove));
-            _platformSpacingAbove = value;
+            else
+                _platformSpacingAbove = value;
         }
     }
     public float PlatformSpacingUnder
@@ -64,7 +71,38 @@ public class MapSettings
         {
             if(value < 0f)
                 throw new System.ArgumentOutOfRangeException(nameof(PlatformSpacingUnder));
-            _platformSpacingUnder = value;
+            else
+                _platformSpacingUnder = value;
+        }
+    }
+    public float PlatformWidth
+    {
+        get => _platformWidth;
+        set
+        {
+            if(value < 0f)
+                throw new System.ArgumentOutOfRangeException(nameof(PlatformWidth));
+            else
+                _platformWidth = value;
+        }
+    }
+    public Vector2 BallSpawnPosition
+    {
+        get => _ballSpawnPosition;
+        set
+        {
+            _ballSpawnPosition = value;
+        }
+    }
+    public float BallRadius
+    {
+        get => _ballRadius;
+        set
+        {
+            if(value < 0f)
+                throw new System.ArgumentOutOfRangeException(nameof(BallRadius));
+            else
+                _ballRadius = value;
         }
     }
 
