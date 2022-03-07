@@ -20,7 +20,7 @@ public class MapEditor : MonoBehaviour
     [SerializeField] private BrickLeveler _brickLevelerPrefab;
     [SerializeField] private ChangeSizeButtons _changeSizeButtonsPrefab;
 
-    private MapSettings Settings => _field.Settings;
+    private LevelSettings Settings => _field.Settings;
 
     private Dictionary<Vector2Int, BrickButton> _brickButtons = new Dictionary<Vector2Int, BrickButton>();
     private List<ChangeSizeButtons> _changeSizeButtons = new List<ChangeSizeButtons>();

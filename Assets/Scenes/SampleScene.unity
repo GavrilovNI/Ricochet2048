@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 51298470}
   - component: {fileID: 51298469}
   - component: {fileID: 51298468}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BottomBallRemover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,6 +515,8 @@ MonoBehaviour:
   _ballPrefab: {fileID: 866588502507154506, guid: 5ed2ef1339f85bf419f5ebc31c82b89d, type: 3}
   _balls: {fileID: 1377293648}
   _bricks: {fileID: 100095806}
+  _mapSettings:
+    _ballRadius: 0.15
 --- !u!4 &1133641576
 Transform:
   m_ObjectHideFlags: 0
@@ -561,7 +563,8 @@ MonoBehaviour:
     _platformSpacingUnder: 0.5
     _platformWidth: 1
     _ballSpawnPosition: {x: 2, y: 1}
-    _ballRadius: 0.15
+    _mapSettings:
+      _ballRadius: 0.15
 --- !u!114 &1133641578
 MonoBehaviour:
   m_ObjectHideFlags: 0

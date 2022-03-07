@@ -20,9 +20,15 @@ public class Map : MonoBehaviour
 
     [SerializeField] private BallContainer _balls;
     [SerializeField] private BrickContainer _bricks;
+    [SerializeField] private MapSettings _mapSettings;
 
     public BallContainer Balls => _balls;
     public BrickContainer Bricks => _bricks;
+    public MapSettings MapSettings
+    {
+        get => _mapSettings;
+        set => _mapSettings = value;
+    }
 
     private void Awake()
     {
@@ -79,6 +85,7 @@ public class Map : MonoBehaviour
     {
         Ball ball = Instantiate(_ballPrefab, brick.transform.position, Quaternion.AngleAxis(Random.value * 360f, Vector3.back)); ;
         ball.Level = brick.Level;
+        ball.Radius = _mapSettings.BallRadius;
         _balls.Add(ball);
 
         _bricks.Remove(brick);

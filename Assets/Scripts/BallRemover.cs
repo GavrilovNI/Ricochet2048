@@ -14,7 +14,7 @@ public class BallRemover : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Ball ball = collision.GetComponent<Ball>();
+        Ball ball = collision.GetComponentInParent<Ball>();
         if (ball == null)
             return;
 

@@ -4,12 +4,28 @@ using UnityEngine;
 
 public class MapSaveScriptableObject : ScriptableObject
 {
-    public MapSettings Settings;
+    public LevelSettings Settings;
     public MapSave Save;
 }
-
 [System.Serializable]
 public class MapSettings
+{
+    [SerializeField] private float _ballRadius = 0.15f;
+
+    public float BallRadius
+    {
+        get => _ballRadius;
+        set
+        {
+            if(value < 0f)
+                throw new System.ArgumentOutOfRangeException(nameof(BallRadius));
+            else
+                _ballRadius = value;
+        }
+    }
+}
+[System.Serializable]
+public class LevelSettings
 {
     [SerializeField, Min(0.01f)] private float _wallsWidth = 0.05f;
     [SerializeField] private Vector2 _brickSize = Vector2.one;
@@ -18,7 +34,7 @@ public class MapSettings
     [SerializeField, Min(0f)] private float _platformSpacingUnder = 0.5f;
     [SerializeField, Min(0f)] private float _platformWidth = 1;
     [SerializeField] private Vector2 _ballSpawnPosition = new Vector2(2, 1);
-    [SerializeField] private float _ballRadius = 0.15f;
+    [SerializeField] private MapSettings _mapSettings;
 
     public float WallsWidth
     {
@@ -94,17 +110,8 @@ public class MapSettings
             _ballSpawnPosition = value;
         }
     }
-    public float BallRadius
-    {
-        get => _ballRadius;
-        set
-        {
-            if(value < 0f)
-                throw new System.ArgumentOutOfRangeException(nameof(BallRadius));
-            else
-                _ballRadius = value;
-        }
-    }
+
+    public MapSettings MapSettings => _mapSettings;
 
     public Vector2 MapSize => _mapSizeInBricks * _brickSize;
 }

@@ -16,9 +16,9 @@ public class MapField : MonoBehaviour
     [SerializeField] private Brick _brickPrefab;
     [SerializeField] private Ball _ballPrefab;
 
-    [SerializeField] private MapSettings _settings;
+    [SerializeField] private LevelSettings _settings;
 
-    public MapSettings Settings => _settings;
+    public LevelSettings Settings => _settings;
     
     public Vector2 MapSize => _settings.MapSize;
     public Bounds MapBounds => new Bounds(transform.position + MapSize.ToV3() / 2f, MapSize);
@@ -42,7 +42,7 @@ public class MapField : MonoBehaviour
         Ball ball = Instantiate(_ballPrefab);
         ball.transform.position = MapBounds.min + Settings.BallSpawnPosition.ToV3();
         ball.transform.rotation = Quaternion.identity;
-        ball.Radius = Settings.BallRadius;
+        ball.Radius = Settings.MapSettings.BallRadius;
         _map.Balls.Add(ball);
     }
 
