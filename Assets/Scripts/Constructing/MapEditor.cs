@@ -61,7 +61,7 @@ public class MapEditor : MonoBehaviour
         foreach(var button in _brickButtons)
         {
             if(button.Value is BrickLeveler leveler)
-                result.Set(button.Key, leveler.Level);
+                result.Set(button.Key, new BrickSave(leveler.BrickModel.Index, leveler.Level));
         }
         return result;
     }

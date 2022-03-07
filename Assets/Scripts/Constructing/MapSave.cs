@@ -109,25 +109,41 @@ public class MapSettings
     public Vector2 MapSize => _mapSizeInBricks * _brickSize;
 }
 
+public class BrickSave
+{
+    [SerializeField, Min(0f)] private int _brickModelIndex; 
+    [SerializeField] private Level _level;
+
+    public int BrickModelIndex => _brickModelIndex;
+    public Level Level => _level;
+
+    public BrickSave(int brickModelIndex, Level level)
+    {
+        if(brickModelIndex < 0)
+            throw new System.ArgumentOutOfRangeException(nameof(brickModelIndex));
+        _brickModelIndex = brickModelIndex;
+        _level = level;
+    }
+}
 
 [System.Serializable]
 public class MapSave
 {
-    private Dictionary<Vector2Int, Level> _bricks = new Dictionary<Vector2Int, Level>();
+    private Dictionary<Vector2Int, BrickSave> _bricks = new Dictionary<Vector2Int, BrickSave>();
 
-    public void Set(Vector2Int position, Level? level)
+    public void Set(Vector2Int position, BrickSave? brick)
     {
         if(_bricks.ContainsKey(position))
         {
-            if(level == null)
+            if(brick == null)
                 _bricks.Remove(position);
             else
-                _bricks[position] = level.Value;
+                _bricks[position] = brick;
         }
         else
         {
-            if(level != null)
-                _bricks.Add(position, level.Value);
+            if(brick != null)
+                _bricks.Add(position, brick);
         }
     }
 }
