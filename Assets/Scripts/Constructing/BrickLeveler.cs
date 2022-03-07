@@ -2,10 +2,8 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BrickLeveler : MonoBehaviour
+public class BrickLeveler : BrickButton
 {
-    public UnityEvent Remove;
-
     private Level _level = new Level();
     public Level Level
     {
@@ -22,7 +20,7 @@ public class BrickLeveler : MonoBehaviour
 
     public void Awake()
     {
-        _removeButton.MouseDown.AddListener(() => Remove?.Invoke());
+        _removeButton.MouseDown.AddListener(() => Switch?.Invoke());
         UpdateLevelText();
     }
 

@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 301872463394710779}
   - component: {fileID: 6096243470981857836}
   - component: {fileID: 301872463394710778}
-  - component: {fileID: 301872463394710782}
-  - component: {fileID: 301872463394710783}
+  - component: {fileID: 866588502507154506}
+  - component: {fileID: 7150824619017413160}
   m_Layer: 6
   m_Name: Ball
   m_TagString: Untagged
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
---- !u!114 &301872463394710782
+--- !u!114 &866588502507154506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,8 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd21d6f285c3474187fd0e21471cd40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _level: 0
---- !u!114 &301872463394710783
+  _level:
+    _level: 0
+--- !u!114 &7150824619017413160
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,7 +264,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

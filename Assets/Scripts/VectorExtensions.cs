@@ -31,19 +31,19 @@ namespace VectorExtensions
         public static Vector3 ToFloat(this Vector3Int vector) =>
             new Vector3(vector.x, vector.y, vector.z);
 
-        public static Vector3Int ToV3(this Vector2Int vector, int z = 0) =>
+        public static Vector3Int ToV3(this Vector2Int vector, float z = 0) =>
             vector.ToFloat().ToV3(z).ToInt();
 
         public static Vector3Int ToV3(this Vector2Int vector,
-            Coordinate coordinateToAdd, int coordinateToAddValue = 0) =>
+            Coordinate coordinateToAdd, float coordinateToAddValue = 0) =>
             vector.ToFloat().ToV3(coordinateToAdd, coordinateToAddValue).ToInt();
 
 
-        public static Vector3 ToV3(this Vector2 vector, int z = 0) =>
+        public static Vector3 ToV3(this Vector2 vector, float z = 0) =>
             vector.ToV3(Coordinate.Z, z);
 
         public static Vector3 ToV3(this Vector2 vector,
-            Coordinate coordinateToAdd, int coordinateToAddValue = 0)
+            Coordinate coordinateToAdd, float coordinateToAddValue = 0)
         {
             switch(coordinateToAdd)
             {

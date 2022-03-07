@@ -295,7 +295,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -319,7 +319,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 2, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -498,7 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51b3412821827c48b0f2f96221631c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ballPrefab: {fileID: 301872463394710782, guid: 5ed2ef1339f85bf419f5ebc31c82b89d, type: 3}
+  _ballPrefab: {fileID: 866588502507154506, guid: 5ed2ef1339f85bf419f5ebc31c82b89d, type: 3}
   _balls: {fileID: 1377293648}
   _bricks: {fileID: 100095806}
 --- !u!4 &1133641576
@@ -538,11 +538,12 @@ MonoBehaviour:
   _platform: {fileID: 1808796851}
   _bottomBallRemover: {fileID: 51298468}
   _brickPrefab: {fileID: 2056652937439842374, guid: 3004f70aab0e49346a5833c4435ae151, type: 3}
-  _wallsWidth: 0.05
-  _brickSize: {x: 1, y: 1}
-  _mapSizeInBricks: {x: 4, y: 4}
-  _platformSpacingAbove: 0.5
-  _platformSpacingUnder: 0.5
+  _settings:
+    _wallsWidth: 0.05
+    _brickSize: {x: 1, y: 1}
+    _mapSizeInBricks: {x: 4, y: 4}
+    _platformSpacingAbove: 0.5
+    _platformSpacingUnder: 0.5
 --- !u!114 &1133641578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,8 +556,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c499d4dd51dd750458876476cba9ac13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _createBrickButtonPrefab: {fileID: 8935833020948795081, guid: efbe18a5ae2c3894696380b9d52e4a68, type: 3}
+  _camera: {fileID: 519420031}
+  _createBrickButtonPrefab: {fileID: 3943835403552255450, guid: efbe18a5ae2c3894696380b9d52e4a68, type: 3}
   _brickLevelerPrefab: {fileID: 588470982532476267, guid: 192a645433dc14844afdfb0c87b3b598, type: 3}
+  _changeSizeButtonsPrefab: {fileID: 1311257219863079469, guid: fbbe0063c7a611b429256a54d782574f, type: 3}
 --- !u!1 &1158922887
 GameObject:
   m_ObjectHideFlags: 0

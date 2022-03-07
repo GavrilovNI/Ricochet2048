@@ -15,33 +15,11 @@ public class MapField : MonoBehaviour
     [SerializeField] private BallRemover _bottomBallRemover;
     [SerializeField] private Brick _brickPrefab;
 
-    [SerializeField, Min(0f)] private float _wallsWidth = 0.05f;
-    [SerializeField, Min(1f)] private Vector2 _brickSize = Vector2.one;
-    [SerializeField] private Vector2Int _mapSizeInBricks = Vector2Int.one * 4;
-    [SerializeField, Min(0f)] private float _platformSpacingAbove = 0.5f;
-    [SerializeField, Min(0f)] private float _platformSpacingUnder = 0.5f;
+    [SerializeField] private MapSettings _settings;
 
-    public Vector2 BrickSize
-    {
-        get { return _brickSize; }
-        set
-        {
-            if(value.x < 0 || value.y < 0)
-                throw new System.Exception("Brick size must be moew than (0, 0).");
-            _brickSize = value;
-        }
-    }
-    public Vector2Int MapSizeInBricks
-    {
-        get { return _mapSizeInBricks; }
-        set {
-            if(value.x < 0 || value.y < 0)
-                throw new System.Exception("Map size must be moew than (0, 0).");
-            _mapSizeInBricks = value;
-        }
-    }
+    public MapSettings Settings => _settings;
     
-    public Vector2 MapSize => _mapSizeInBricks * _brickSize;
+    public Vector2 MapSize => _settings.MapSize;
     public Bounds MapBounds => new Bounds(transform.position + MapSize.ToV3() / 2f, MapSize);
 
     private Map _map;
@@ -53,21 +31,21 @@ public class MapField : MonoBehaviour
 
     private void Start()
     {
-        Construct();
+        ConstructDefault();
         //SpawnTestBricks();
     }
 
     private void SpawnTestBricks()
     {
         int level = 0;
-        for(int y = 0; y < _mapSizeInBricks.y; y++)
-            for(int x = 0; x < _mapSizeInBricks.x; x++)
+        for(int y = 0; y < _settings.MapSizeInBricks.y; y++)
+            for(int x = 0; x < _settings.MapSizeInBricks.x; x++)
                 SpawnBrick(new Vector2Int(x, y), _brickPrefab, (Level)level++);
     }
 
     public Vector3 GetBrickPosition(Vector2Int position)
     {
-        return MapBounds.min + (_brickSize * (position + Vector2.one * 0.5f)).ToV3();
+        return MapBounds.min + (_settings.BrickSize * (position + Vector2.one * 0.5f)).ToV3();
     }
 
     public void SpawnBrick(Vector2Int position, Brick brickPrefab, Level level)
@@ -78,36 +56,36 @@ public class MapField : MonoBehaviour
             throw new System.ArgumentOutOfRangeException(nameof(position));
 
         Brick brick = Instantiate(brickPrefab, spawnPosition, Quaternion.identity);
-        brick.transform.SetGlobalScale(Vector3.one * _brickSize);
+        brick.transform.SetGlobalScale(Vector3.one * _settings.BrickSize);
 
         brick.Level = level;
         _map.Bricks.Add(brick);
     }
 
     [ContextMenu("Construct")]
-    public void Construct()
+    public void ConstructDefault()
     {
         Bounds mapBounds = MapBounds;
 
-        float fullPlatformSpacing = _platformSpacingAbove + _platformSpacingUnder;
-        Vector3 sideWallsScale = new Vector3(_wallsWidth, mapBounds.size.y + fullPlatformSpacing);
+        float fullPlatformSpacing = _settings.PlatformSpacingAbove + _settings.PlatformSpacingUnder;
+        Vector3 sideWallsScale = new Vector3(_settings.WallsWidth, mapBounds.size.y + fullPlatformSpacing);
         _leftWall.SetGlobalScale(sideWallsScale);
         _rightWall.SetGlobalScale(sideWallsScale);
-        _topWall.SetGlobalScale(new Vector3(mapBounds.size.x + _wallsWidth * 2, _wallsWidth));
+        _topWall.SetGlobalScale(new Vector3(mapBounds.size.x + _settings.WallsWidth * 2, _settings.WallsWidth));
 
-        _leftWall.transform.position = new Vector3(mapBounds.min.x - _wallsWidth / 2f,
+        _leftWall.transform.position = new Vector3(mapBounds.min.x - _settings.WallsWidth / 2f,
                                                    mapBounds.center.y - fullPlatformSpacing / 2f);
-        _rightWall.transform.position = new Vector3(mapBounds.max.x + _wallsWidth / 2f,
+        _rightWall.transform.position = new Vector3(mapBounds.max.x + _settings.WallsWidth / 2f,
                                                    mapBounds.center.y - fullPlatformSpacing / 2f);
         _topWall.transform.position = new Vector3(mapBounds.center.x,
-                                                  mapBounds.max.y + _wallsWidth / 2f);
+                                                  mapBounds.max.y + _settings.WallsWidth / 2f);
 
         _bottomBallRemover.transform.position = new Vector3(mapBounds.center.x,
                                                             mapBounds.min.y - fullPlatformSpacing);
         _bottomBallRemover.transform.SetGlobalScale(new Vector3(mapBounds.size.x, 1));
 
         Vector3 platformPosition = new Vector3(mapBounds.center.x,
-                                               mapBounds.min.y - _platformSpacingAbove);
+                                               mapBounds.min.y - _settings.PlatformSpacingAbove);
         _platform.transform.position = platformPosition;
         PlatformMover platformMover = _platform.GetComponent<PlatformMover>();
         if(platformMover != null)
