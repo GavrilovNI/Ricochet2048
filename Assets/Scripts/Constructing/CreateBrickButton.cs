@@ -8,6 +8,6 @@ public class CreateBrickButton : BrickButton
 {
     public void Awake()
     {
-        GetComponent<Button2D>().MouseDown.AddListener(() => Switch?.Invoke());
+        GetComponent<Button2D>().MouseClick.AddListener(() => Switch?.Invoke());
     }
 }

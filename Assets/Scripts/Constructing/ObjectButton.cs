@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public abstract class ObjectButton : MonoBehaviour
 {
+    public UnityEvent MouseClick;
     public UnityEvent MouseDown;
     public UnityEvent MouseUp;
     public UnityEvent MouseEnter;
@@ -12,14 +13,21 @@ public abstract class ObjectButton : MonoBehaviour
     public UnityEvent MouseDrag;
     public UnityEvent MouseOver;
 
+    [SerializeField] private float _clickDelta = 0.5f;
+    private float _lastMouseDownTime;
+
     private void OnMouseDown()
     {
         MouseDown?.Invoke();
+        _lastMouseDownTime = Time.realtimeSinceStartup;
     }
 
     private void OnMouseUp()
     {
         MouseUp?.Invoke();
+        float currentTime = Time.realtimeSinceStartup;
+        if(currentTime - _lastMouseDownTime < _clickDelta)
+            MouseClick?.Invoke();
     }
 
     private void OnMouseEnter()

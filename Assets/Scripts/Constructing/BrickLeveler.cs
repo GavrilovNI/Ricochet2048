@@ -20,7 +20,7 @@ public class BrickLeveler : BrickButton
 
     public void Awake()
     {
-        _removeButton.MouseDown.AddListener(() => Switch?.Invoke());
+        _removeButton.MouseClick.AddListener(() => Switch?.Invoke());
         UpdateLevelText();
     }
 

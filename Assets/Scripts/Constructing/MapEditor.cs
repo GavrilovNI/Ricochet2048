@@ -25,7 +25,7 @@ public class MapEditor : MonoBehaviour
     private Dictionary<Vector2Int, BrickButton> _brickButtons = new Dictionary<Vector2Int, BrickButton>();
     private List<ChangeSizeButtons> _changeSizeButtons = new List<ChangeSizeButtons>();
 
-    public float ChangeSizeButtonsWidth => _camera.orthographicSize / 10f;
+    public float ChangeSizeButtonsWidth => Mathf.Max(1f, Mathf.Max(Settings.MapSize.x, Settings.MapSize.y) / 10f);
 
     private void Awake()
     {
@@ -41,8 +41,8 @@ public class MapEditor : MonoBehaviour
     private void Start()
     {
         CreateMissingBrickButtons();
-        CreateChangeSizeButtons();
         UpdateCamera();
+        CreateChangeSizeButtons();
     }
 
     private void OnEnable()
@@ -105,9 +105,8 @@ public class MapEditor : MonoBehaviour
         }
 
         CreateMissingBrickButtons();
-        UpdateChangeSizeButtons();
         UpdateButtons();
-        UpdateCamera();
+        UpdateChangeSizeButtons();
         _field.ConstructDefault();
     }
     private void DecreaseSize(ChangeSizeButtons.ChangeDirection direction)
@@ -145,9 +144,8 @@ public class MapEditor : MonoBehaviour
                 MoveAllButtons(Vector2Int.down);
                 break;
         }
-        UpdateChangeSizeButtons();
         UpdateButtons();
-        UpdateCamera();
+        UpdateChangeSizeButtons();
         _field.ConstructDefault();
     }
 

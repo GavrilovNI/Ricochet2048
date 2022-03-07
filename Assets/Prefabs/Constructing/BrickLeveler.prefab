@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abe49ad8e4bbac4e8bde95b523288a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MouseDown:
+  MouseClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 588470982532476267}
@@ -138,6 +138,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  MouseDown:
+    m_PersistentCalls:
+      m_Calls: []
   MouseUp:
     m_PersistentCalls:
       m_Calls: []
@@ -153,6 +156,7 @@ MonoBehaviour:
   MouseOver:
     m_PersistentCalls:
       m_Calls: []
+  _clickDelta: 0.5
 --- !u!1 &2143854593717220608
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,6 +280,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abe49ad8e4bbac4e8bde95b523288a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MouseClick:
+    m_PersistentCalls:
+      m_Calls: []
   MouseDown:
     m_PersistentCalls:
       m_Calls: []
@@ -294,6 +301,7 @@ MonoBehaviour:
   MouseOver:
     m_PersistentCalls:
       m_Calls: []
+  _clickDelta: 0.5
 --- !u!1 &3418660428783120189
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,7 +425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abe49ad8e4bbac4e8bde95b523288a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MouseDown:
+  MouseClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 588470982532476267}
@@ -432,6 +440,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  MouseDown:
+    m_PersistentCalls:
+      m_Calls: []
   MouseUp:
     m_PersistentCalls:
       m_Calls: []
@@ -447,6 +458,7 @@ MonoBehaviour:
   MouseOver:
     m_PersistentCalls:
       m_Calls: []
+  _clickDelta: 0.5
 --- !u!1 &3422987952805796875
 GameObject:
   m_ObjectHideFlags: 0
