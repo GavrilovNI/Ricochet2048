@@ -4,8 +4,6 @@ using UnityEngine;
 [Serializable]
 public class BrickModel
 {
-    public event Action<BrickModels, int> ModelUpdated;
-
     [SerializeField] private BrickModels _brickModels;
     [SerializeField, Min(-1)] private int _brickModelIndex = -1;
 
@@ -30,18 +28,26 @@ public class BrickModel
             if(value < -1 || value >= _brickModels.Count)
                 throw new ArgumentOutOfRangeException(nameof(Index));
             else
-            {
                 _brickModelIndex = value;
-                ModelUpdated?.Invoke(_brickModels, _brickModelIndex);
-            }
         }
     }
 
-    public bool Valid => Index >= 0;
+    public bool IsValid => Index >= 0;
+
+    public BrickModel()
+    {
+
+    }
+
+    public BrickModel(BrickModels models, int index)
+    {
+        _brickModels = models;
+        Index = index;
+    }
 
     public Transform Spawn()
     {
-        if(Valid == false)
+        if(IsValid == false)
             throw new InvalidOperationException("Brick Model is onvalid.");
 
         Transform spawnedModel = GameObject.Instantiate(_brickModels[Index]).transform;

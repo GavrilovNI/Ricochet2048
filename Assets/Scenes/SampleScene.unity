@@ -493,6 +493,7 @@ GameObject:
   - component: {fileID: 1133641575}
   - component: {fileID: 1133641577}
   - component: {fileID: 1133641578}
+  - component: {fileID: 1133641579}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -517,6 +518,7 @@ MonoBehaviour:
   _bricks: {fileID: 100095806}
   _mapSettings:
     _ballRadius: 0.15
+    _platformWidth: 0.15
 --- !u!4 &1133641576
 Transform:
   m_ObjectHideFlags: 0
@@ -556,15 +558,16 @@ MonoBehaviour:
   _brickPrefab: {fileID: 2056652937439842374, guid: 3004f70aab0e49346a5833c4435ae151, type: 3}
   _ballPrefab: {fileID: 866588502507154506, guid: 5ed2ef1339f85bf419f5ebc31c82b89d, type: 3}
   _settings:
-    _wallsWidth: 0.05
+    _ballSpawnPosition: {x: 2, y: 1}
     _brickSize: {x: 1, y: 1}
+    _mapSettings:
+      _ballRadius: 0.15
+      _platformWidth: 0.15
     _mapSizeInBricks: {x: 4, y: 4}
     _platformSpacingAbove: 0.5
     _platformSpacingUnder: 0.5
     _platformWidth: 1
-    _ballSpawnPosition: {x: 2, y: 1}
-    _mapSettings:
-      _ballRadius: 0.15
+    _wallsWidth: 0.05
 --- !u!114 &1133641578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,6 +584,19 @@ MonoBehaviour:
   _createBrickButtonPrefab: {fileID: 3943835403552255450, guid: efbe18a5ae2c3894696380b9d52e4a68, type: 3}
   _brickLevelerPrefab: {fileID: 588470982532476267, guid: 192a645433dc14844afdfb0c87b3b598, type: 3}
   _changeSizeButtonsPrefab: {fileID: 1311257219863079469, guid: fbbe0063c7a611b429256a54d782574f, type: 3}
+  _brickModels: {fileID: 11400000, guid: e84281cee65a61b4ea30be4171390824, type: 2}
+--- !u!114 &1133641579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133641574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3dd44ad0146d04c814c68e5424bda4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1158922887
 GameObject:
   m_ObjectHideFlags: 0

@@ -47,9 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _level:
     _level: 0
-  _model:
-    _brickModels: {fileID: 11400000, guid: e84281cee65a61b4ea30be4171390824, type: 2}
-    _brickModelIndex: 0
+  _modelPrefab: {fileID: 0}
 --- !u!114 &7687533310925377144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,7 +137,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &2056652938067863547
 MonoBehaviour:

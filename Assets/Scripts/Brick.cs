@@ -7,10 +7,8 @@ public class Brick : MonoBehaviour
     public event System.Action<Level> LevelUpdated;
 
     [SerializeField] private Level _level;
-    [SerializeField] private BrickModel _model;
+    [SerializeField] private GameObject _modelPrefab;
     private Transform _spawnedModel;
-
-    public BrickModel BrickModel => _model;
 
     public Level Level
     {
@@ -22,23 +20,14 @@ public class Brick : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        _model.ModelUpdated += UpdateModel;
-    }
-
-    private void Start()
-    {
-        UpdateModel(_model.Models, _model.Index);
-    }
-
-    private void UpdateModel(BrickModels models, int index)
+    public void SetModel(BrickModel model)
     {
         if(_spawnedModel != null)
             GameObject.Destroy(_spawnedModel.gameObject);
-        if(_model.Valid == false)
-            return;
-        _spawnedModel = _model.Spawn();
-        _spawnedModel.SetParent(transform, false);
+        if(model.IsValid)
+        {
+            _spawnedModel = model.Spawn();
+            _spawnedModel.SetParent(transform, false);
+        }
     }
 }

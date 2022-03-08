@@ -18,8 +18,13 @@ public class MapField : MonoBehaviour
 
     [SerializeField] private LevelSettings _settings;
 
-    public LevelSettings Settings => _settings;
+    public LevelSettings Settings
+    {
+        get => _settings;
+        set => _settings = value;
+    }
     
+    public Brick BrickPrefab => _brickPrefab;
     public Vector2 MapSize => _settings.MapSize;
     public Bounds MapBounds => new Bounds(transform.position + MapSize.ToV3() / 2f, MapSize);
 
@@ -32,18 +37,15 @@ public class MapField : MonoBehaviour
 
     private void Start()
     {
-        ConstructDefault();
+        Construct();
         //SpawnTestBricks();
     }
 
-    [ContextMenu("Spawn Ball")]
-    public void SpawnBall()
+    public bool IsInside(Vector2Int position)
     {
-        Ball ball = Instantiate(_ballPrefab);
-        ball.transform.position = MapBounds.min + Settings.BallSpawnPosition.ToV3();
-        ball.transform.rotation = Quaternion.identity;
-        ball.Radius = Settings.MapSettings.BallRadius;
-        _map.Balls.Add(ball);
+        return position.x >= 0 && position.y >= 0 &&
+               position.x < Settings.MapSizeInBricks.x &&
+               position.y < Settings.MapSizeInBricks.y;
     }
 
     private void SpawnTestBricks()
@@ -73,8 +75,18 @@ public class MapField : MonoBehaviour
         _map.Bricks.Add(brick);
     }
 
+    [ContextMenu("Spawn Ball")]
+    public void SpawnBall()
+    {
+        Ball ball = Instantiate(_ballPrefab);
+        ball.transform.position = MapBounds.min + Settings.BallSpawnPosition.ToV3();
+        ball.transform.rotation = Quaternion.identity;
+        ball.Radius = Settings.MapSettings.BallRadius;
+        _map.Balls.Add(ball);
+    }
+
     [ContextMenu("Construct")]
-    public void ConstructDefault()
+    public void Construct()
     {
         Bounds mapBounds = MapBounds;
 

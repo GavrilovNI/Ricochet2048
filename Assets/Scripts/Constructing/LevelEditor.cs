@@ -4,10 +4,11 @@ using UnityEditor;
 using UnityEngine;
 using TransformExtensions;
 using VectorExtensions;
+using System.Linq;
 
 [RequireComponent(typeof(Map))]
 [RequireComponent(typeof(MapField))]
-public class MapEditor : MonoBehaviour
+public class LevelEditor : MonoBehaviour
 {
     private Map _map;
     private MapField _field;
@@ -19,9 +20,9 @@ public class MapEditor : MonoBehaviour
     [SerializeField] private CreateBrickButton _createBrickButtonPrefab;
     [SerializeField] private BrickLeveler _brickLevelerPrefab;
     [SerializeField] private ChangeSizeButtons _changeSizeButtonsPrefab;
+    [SerializeField] private BrickModels _brickModels;
 
     private LevelSettings Settings => _field.Settings;
-
     private Dictionary<Vector2Int, BrickButton> _brickButtons = new Dictionary<Vector2Int, BrickButton>();
     private List<ChangeSizeButtons> _changeSizeButtons = new List<ChangeSizeButtons>();
 
@@ -34,6 +35,7 @@ public class MapEditor : MonoBehaviour
 
         _editorParent = new GameObject("Editing").transform;
         _editorParent.SetParent(transform);
+        _editorParent.gameObject.SetActive(enabled);
         _brickButtonsParent = new GameObject("BrickButtons").transform;
         _brickButtonsParent.SetParent(_editorParent);
     }
@@ -47,7 +49,13 @@ public class MapEditor : MonoBehaviour
 
     private void OnEnable()
     {
+        _map.Bricks.Clear();
         _editorParent.gameObject.SetActive(true);
+        RemoveInvalidButtons();
+        CreateMissingBrickButtons();
+        UpdateButtonSizesAndPositions();
+        UpdateChangeSizeButtons();
+        _field.Construct();
     }
 
     private void OnDisable()
@@ -55,13 +63,38 @@ public class MapEditor : MonoBehaviour
         _editorParent.gameObject.SetActive(false);
     }
 
-    public MapSave Save()
+    public void Load(SavedMap map)
     {
-        MapSave result = new MapSave();
+        _map.Bricks.Clear();
+        LevelSettings levelSettings = new LevelSettings(map.LevelSettings);
+        _field.Settings = levelSettings;
+        _field.Construct();
+        _map.MapSettings = levelSettings.MapSettings;
+        RemoveAllButtons();
+        using(var empEnumerator = map.SavedLevel.GetBricksEnumerator())
+        {
+            while(empEnumerator.MoveNext())
+            {
+                var current = empEnumerator.Current;
+                BrickLeveler button = CreateButton(current.Position, _brickLevelerPrefab);
+                button.Level = current.BrickType.Level;
+                button.SetModel(new BrickModel(_brickModels, current.BrickType.BrickModelIndex));
+            }
+        }
+        CreateMissingBrickButtons();
+        UpdateChangeSizeButtons();
+    }
+
+    public SavedMap Save()
+    {
+        SavedMap result = ScriptableObject.CreateInstance<SavedMap>();
+        result.LevelSettings = new LevelSettings(Settings);
+        result.SavedLevel = new SavedLevel();
+        result.SavedLevel.BrickModels = _brickModels;
         foreach(var button in _brickButtons)
         {
             if(button.Value is BrickLeveler leveler)
-                result.Set(button.Key, new BrickSave(leveler.BrickModel.Index, leveler.Level));
+                result.SavedLevel.Set(button.Key, new BrickType(leveler.ModelIndex, leveler.Level));
         }
         return result;
     }
@@ -105,9 +138,9 @@ public class MapEditor : MonoBehaviour
         }
 
         CreateMissingBrickButtons();
-        UpdateButtons();
+        UpdateButtonSizesAndPositions();
         UpdateChangeSizeButtons();
-        _field.ConstructDefault();
+        _field.Construct();
     }
     private void DecreaseSize(ChangeSizeButtons.ChangeDirection direction)
     {
@@ -144,11 +177,24 @@ public class MapEditor : MonoBehaviour
                 MoveAllButtons(Vector2Int.down);
                 break;
         }
-        UpdateButtons();
+        UpdateButtonSizesAndPositions();
         UpdateChangeSizeButtons();
-        _field.ConstructDefault();
+        _field.Construct();
     }
 
+    private void RemoveInvalidButtons()
+    {
+        foreach(var button in _brickButtons.ToList())
+        {
+            if(_field.IsInside(button.Key) == false)
+                _brickButtons.Remove(button.Key);
+        }
+    }
+    private void RemoveButton(Vector2Int position)
+    {
+        Destroy(_brickButtons[position].gameObject);
+        _brickButtons.Remove(position);
+    }
     private void RemoveButtonsInRange(int fromX, int fromY, int toX, int toY)
     {
         for(int y = fromY; y < toY; y++)
@@ -156,9 +202,15 @@ public class MapEditor : MonoBehaviour
             for(int x = fromX; x < toX; x++)
             {
                 Vector2Int position = new Vector2Int(x, y);
-                Destroy(_brickButtons[position].gameObject);
-                _brickButtons.Remove(position);
+                RemoveButton(position);
             }
+        }
+    }
+    private void RemoveAllButtons()
+    {
+        foreach(var button in _brickButtons.ToList())
+        {
+            RemoveButton(button.Key);
         }
     }
     private void MoveAllButtons(Vector2Int delta)
@@ -230,25 +282,30 @@ public class MapEditor : MonoBehaviour
             }
         }
     }
-    private void UpdateButtons()
+    private void UpdateButtonSizesAndPositions()
     {
         foreach(var button in _brickButtons)
         {
             SetupButton(button.Value, button.Key);
         }
     }
-    private BrickButton CreateButton(Vector2Int position, BrickButton prefab)
+    private T CreateButton<T>(Vector2Int position, T prefab) where T : BrickButton
     {
         if(_brickButtons.ContainsKey(position))
             throw new System.InvalidOperationException("Position already contains button");
 
         Vector3 position3D = _field.GetBrickPosition(position);
-        BrickButton brickButton = GameObject.Instantiate(prefab);
+        T brickButton = GameObject.Instantiate(prefab);
         SetupButton(brickButton, position);
 
         _brickButtons.Add(position, brickButton);
 
         brickButton.Switch.AddListener(() => SwitchButton(position));
+
+        if(brickButton is BrickLeveler leveler)
+        {
+            leveler.SetModel(new BrickModel(_brickModels, 0));
+        }
 
         return brickButton;
     }

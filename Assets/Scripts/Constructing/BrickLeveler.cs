@@ -19,34 +19,32 @@ public class BrickLeveler : BrickButton
     [SerializeField] private Button2D _removeButton;
 
     [SerializeField] private BrickModel _model;
-    public BrickModel BrickModel => _model;
-    private Transform _spawnedModel;
+    public int ModelIndex => _model.Index;
+    private Transform _spawnedModel = null;
 
     public void Awake()
     {
         _removeButton.MouseClick.AddListener(() => Switch?.Invoke());
         UpdateLevelText();
-        _model.ModelUpdated += UpdateModel;
     }
 
     public void Start()
     {
-        UpdateModel(_model.Models, _model.Index);
+        SetModel(_model);
     }
 
-    private void UpdateModel(BrickModels models, int index)
+    public void SetModel(BrickModel model)
     {
         if(_spawnedModel != null)
             GameObject.Destroy(_spawnedModel.gameObject);
-        if(_model.Valid == false)
-            return;
-        _spawnedModel = _model.Spawn();
-        _spawnedModel.SetParent(transform, false);
-
-        var colliders = _spawnedModel.GetComponentsInChildren<Collider2D>();
-        foreach(var collider in colliders)
+        if(model.IsValid)
         {
-            collider.enabled = false;
+            _spawnedModel = model.Spawn();
+            _spawnedModel.SetParent(transform, false);
+            foreach(var collider in _spawnedModel.GetComponentsInChildren<Collider2D>())
+            {
+                collider.enabled = false;
+            }
         }
     }
 
