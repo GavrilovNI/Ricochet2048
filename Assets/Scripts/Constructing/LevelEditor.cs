@@ -71,6 +71,7 @@ public class LevelEditor : MonoBehaviour
         _field.Construct();
         _map.MapSettings = levelSettings.MapSettings;
         RemoveAllButtons();
+        _brickModels = map.SavedLevel.BrickModels;
         using(var empEnumerator = map.SavedLevel.GetBricksEnumerator())
         {
             while(empEnumerator.MoveNext())
