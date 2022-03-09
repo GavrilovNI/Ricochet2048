@@ -60,7 +60,7 @@ public class LevelEditor : MonoBehaviour
         CreateMissingBrickButtons();
         UpdateButtonSizesAndPositions();
         UpdateChangeSizeButtons();
-        _field.Construct();
+        _field.ReConstruct();
 
         _modelPicker.ModelPicked.AddListener(OnModelPicked);
     }
@@ -75,8 +75,7 @@ public class LevelEditor : MonoBehaviour
     {
         _map.Bricks.Clear();
         LevelSettings levelSettings = new LevelSettings(map.LevelSettings);
-        _field.Settings = levelSettings;
-        _field.Construct();
+        _field.Construct(levelSettings);
         _map.MapSettings = levelSettings.MapSettings;
         RemoveAllButtons();
         _brickModels = map.SavedLevel.BrickModels;
@@ -149,7 +148,7 @@ public class LevelEditor : MonoBehaviour
         CreateMissingBrickButtons();
         UpdateButtonSizesAndPositions();
         UpdateChangeSizeButtons();
-        _field.Construct();
+        _field.ReConstruct();
     }
     private void DecreaseSize(ChangeSizeButtons.ChangeDirection direction)
     {
@@ -188,7 +187,7 @@ public class LevelEditor : MonoBehaviour
         }
         UpdateButtonSizesAndPositions();
         UpdateChangeSizeButtons();
-        _field.Construct();
+        _field.ReConstruct();
     }
 
     private void RemoveInvalidButtons()

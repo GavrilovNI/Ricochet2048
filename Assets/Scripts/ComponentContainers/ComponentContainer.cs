@@ -64,4 +64,6 @@ public class ComponentContainer<T> : MonoBehaviour where T : Component
         }
         _components.Clear();
     }
+
+    public HashSet<T>.Enumerator GetEnumerator() => _components.GetEnumerator();
 }

@@ -1,20 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Map : MonoBehaviour
+public class Map : MonoBehaviour, IPausable
 {
     public static Map Instance { get; private set; }
 
     public event System.Action Lost;
     public event System.Action Won;
     
-    private enum State
+    public enum GameState
     {
+        Cleared,
+        Paused,
         Playing,
         Won,
-        Lost
+        Lost,
     }
-    private State _state;
+    private GameState _state;
 
     [SerializeField] private Ball _ballPrefab;
 
@@ -29,6 +31,9 @@ public class Map : MonoBehaviour
         get => _mapSettings;
         set => _mapSettings = value;
     }
+    public GameState State => _state;
+
+    public bool IsPaused => _state == GameState.Paused;
 
     private void Awake()
     {
@@ -36,8 +41,7 @@ public class Map : MonoBehaviour
             throw new System.Exception("Can't create second map, it should be a Singleton.");
         Instance = this;
 
-        _state = State.Playing;
-        UpdateState();
+        _state = _balls.Count == 0 && _bricks.Count == 0 ? GameState.Cleared : GameState.Playing;
     }
 
     private void OnEnable()
@@ -52,19 +56,57 @@ public class Map : MonoBehaviour
         _bricks.Removed -= OnBrickRemoved;
     }
 
-    private void UpdateState()
+    public void Clear()
     {
-        if (_state != State.Playing)
+        _bricks.Clear();
+        _balls.Clear();
+        _state = GameState.Cleared;
+    }
+    public void StartGame()
+    {
+        _state = GameState.Playing;
+    }
+
+    public void Pause()
+    {
+        if(_state != GameState.Playing)
+            throw new System.InvalidOperationException("Can't pause. Game is not running.");
+        foreach(Ball ball in _balls)
+        {
+            BallMover ballMover = ball.GetComponent<BallMover>();
+            if(ballMover != null)
+                ballMover.Pause();
+        }
+        _state = GameState.Paused;
+    }
+
+    public void Continue()
+    {
+        if(_state != GameState.Paused)
+            throw new System.InvalidOperationException("Can't continue. Game is not paused.");
+        foreach(Ball ball in _balls)
+        {
+            BallMover ballMover = ball.GetComponent<BallMover>();
+            if(ballMover != null)
+                ballMover.Continue();
+        }
+        _state = GameState.Playing;
+        UpdatePlayingState();
+    }
+
+    private void UpdatePlayingState()
+    {
+        if (_state != GameState.Playing)
             return;
         if (_bricks.Count == 0)
         {
-            _state = State.Won;
+            _state = GameState.Won;
             Won?.Invoke();
             return;
         }
         if (_balls.Count == 0)
         {
-            _state = State.Lost;
+            _state = GameState.Lost;
             Lost?.Invoke();
             return;
         }
@@ -73,12 +115,12 @@ public class Map : MonoBehaviour
     private void OnBallRemoved(Ball ball)
     {
         GameObject.Destroy(ball.gameObject);
-        UpdateState();
+        UpdatePlayingState();
     }
     private void OnBrickRemoved(Brick brick)
     {
         GameObject.Destroy(brick.gameObject);
-        UpdateState();
+        UpdatePlayingState();
     }
 
     public void ConvertBrickToBall(Brick brick)

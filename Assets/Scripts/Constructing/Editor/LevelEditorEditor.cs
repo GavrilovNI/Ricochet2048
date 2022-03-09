@@ -16,7 +16,7 @@ public class LevelEditorEditor : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        if(_target.enabled == false || _target.gameObject.active == false)
+        if(_target.enabled == false || _target.gameObject.activeInHierarchy == false)
             return;
 
         if(Application.isPlaying)

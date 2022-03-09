@@ -16,7 +16,7 @@ public class MapLoaderEditor : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        if(_target.enabled == false || _target.gameObject.active == false)
+        if(_target.enabled == false || _target.gameObject.activeInHierarchy == false)
             return;
 
         if(Application.isPlaying && GUILayout.Button("Load"))
@@ -30,7 +30,10 @@ public class MapLoaderEditor : Editor
                 if(savedMap == null)
                     Debug.Log("Map file not found.");
                 else
+                {
+                    _target.ClearMap();
                     _target.Load(savedMap);
+                }
             }
         }
     }

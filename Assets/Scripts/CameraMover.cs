@@ -16,12 +16,13 @@ public class CameraMover : MonoBehaviour
     private Camera _camera;
     private Vector3 _oldMousePosition;
 
-    private bool _isFocused;
+    private bool _isFocused = false;
 
     private Vector3 _mouseDownPosition;
     private bool _buttonDown = false;
     private bool _movedMoreThanDelta = false;
     private float _timeOnButtonDown;
+
 
     private void Awake()
     {
@@ -37,6 +38,12 @@ public class CameraMover : MonoBehaviour
     private void Update()
     {
         if(_isFocused == false)
+            return;
+
+        Vector3 _mouseViewPos = _camera.ScreenToViewportPoint(Input.mousePosition);
+        bool isMouseOutside = _mouseViewPos.x < 0 || _mouseViewPos.x > 1 || _mouseViewPos.y < 0 || _mouseViewPos.y > 1;
+
+        if(isMouseOutside)
             return;
 
         if(Input.GetButtonDown(_moveButton))

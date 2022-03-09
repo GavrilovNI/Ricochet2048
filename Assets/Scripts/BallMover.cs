@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class BallMover : MonoBehaviour
+public class BallMover : MonoBehaviour, IPausable
 {
     public event Action<GameObject> HittedObject;
 
@@ -23,6 +23,9 @@ public class BallMover : MonoBehaviour
     }
 
     private Rigidbody2D _rigidbody;
+    private bool _paused = false;
+
+    public bool IsPaused => _paused;
 
     private void Awake()
     {
@@ -38,12 +41,16 @@ public class BallMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //_rigidbody.AddForce(Direction * _speed, ForceMode2D.Impulse);
+        if(_paused)
+            return;
         _rigidbody.velocity = Direction * _speed;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if(_paused)
+            return;
+
         Vector2 commonNormal = Vector3.zero;
         foreach (var contact in collision.contacts)
             commonNormal += contact.normal;
@@ -53,4 +60,7 @@ public class BallMover : MonoBehaviour
 
         HittedObject?.Invoke(collision.gameObject);
     }
+
+    public void Pause() => _paused = true;
+    public void Continue() => _paused = false;
 }
