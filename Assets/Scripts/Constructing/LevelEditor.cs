@@ -22,6 +22,9 @@ public class LevelEditor : MonoBehaviour
     [SerializeField] private ChangeSizeButtons _changeSizeButtonsPrefab;
     [SerializeField] private BrickModels _brickModels;
 
+    [SerializeField] private BrickModelPicker _modelPicker;
+    private Vector2Int _currentModelPickingBrick = -Vector2Int.one;
+
     private LevelSettings Settings => _field.Settings;
     private Dictionary<Vector2Int, BrickButton> _brickButtons = new Dictionary<Vector2Int, BrickButton>();
     private List<ChangeSizeButtons> _changeSizeButtons = new List<ChangeSizeButtons>();
@@ -45,6 +48,8 @@ public class LevelEditor : MonoBehaviour
         CreateMissingBrickButtons();
         UpdateCamera();
         CreateChangeSizeButtons();
+
+        _modelPicker.enabled = false;
     }
 
     private void OnEnable()
@@ -56,11 +61,14 @@ public class LevelEditor : MonoBehaviour
         UpdateButtonSizesAndPositions();
         UpdateChangeSizeButtons();
         _field.Construct();
+
+        _modelPicker.ModelPicked.AddListener(OnModelPicked);
     }
 
     private void OnDisable()
     {
         _editorParent.gameObject.SetActive(false);
+        _modelPicker.ModelPicked.RemoveListener(OnModelPicked);
     }
 
     public void Load(SavedMap map)
@@ -290,6 +298,32 @@ public class LevelEditor : MonoBehaviour
             SetupButton(button.Value, button.Key);
         }
     }
+
+    private void ShowModelPicker(Vector2Int position)
+    {
+        Vector3 pickModelPosition = _field.GetBrickPosition(position) +
+                                    Settings.BrickSize.Invert(Coordinate2D.Y).ToV3() / 2f;
+        _modelPicker.transform.position = pickModelPosition;
+        _modelPicker.gameObject.SetActive(true);
+        _currentModelPickingBrick = position;
+        _modelPicker.BrickModels = _brickModels;
+        _modelPicker.BrickSize = Settings.BrickSize;
+    }
+
+    private void OnModelPicked(int modelIndex)
+    {
+        if(_currentModelPickingBrick == -Vector2Int.one)
+            return;
+
+        if(_brickButtons[_currentModelPickingBrick] is BrickLeveler leveler)
+        {
+            leveler.SetModel(new BrickModel(_brickModels, modelIndex));
+        }
+
+        _currentModelPickingBrick = -Vector2Int.one;
+        _modelPicker.gameObject.SetActive(false);
+    }
+
     private T CreateButton<T>(Vector2Int position, T prefab) where T : BrickButton
     {
         if(_brickButtons.ContainsKey(position))
@@ -306,6 +340,7 @@ public class LevelEditor : MonoBehaviour
         if(brickButton is BrickLeveler leveler)
         {
             leveler.SetModel(new BrickModel(_brickModels, 0));
+            leveler.PickModel.AddListener(() => ShowModelPicker(position));
         }
 
         return brickButton;
@@ -317,6 +352,7 @@ public class LevelEditor : MonoBehaviour
         brickButton.transform.rotation = Quaternion.identity;
         brickButton.transform.SetParent(_brickButtonsParent, true);
         brickButton.transform.SetGlobalScale(Settings.BrickSize);
+        brickButton.name = brickButton.GetType().Name + " " + position.ToString();
     }
     private void SwitchButton(Vector2Int position)
     {

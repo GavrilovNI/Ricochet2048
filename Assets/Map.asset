@@ -18,7 +18,7 @@ MonoBehaviour:
     _mapSettings:
       _ballRadius: 0.15
       _platformWidth: 0.15
-    _mapSizeInBricks: {x: 4, y: 5}
+    _mapSizeInBricks: {x: 4, y: 4}
     _platformSpacingAbove: 0.5
     _platformSpacingUnder: 0.5
     _platformWidth: 1
@@ -26,38 +26,23 @@ MonoBehaviour:
   SavedLevel:
     _brickModels: {fileID: 11400000, guid: e84281cee65a61b4ea30be4171390824, type: 2}
     _bricks:
-    - Position: {x: 3, y: 3}
-      BrickType:
-        _brickModelIndex: 0
-        _level:
-          _level: 1
-    - Position: {x: 1, y: 3}
-      BrickType:
-        _brickModelIndex: 0
-        _level:
-          _level: 2
-    - Position: {x: 0, y: 3}
-      BrickType:
-        _brickModelIndex: 0
-        _level:
-          _level: 0
-    - Position: {x: 3, y: 2}
+    - Position: {x: 2, y: 1}
       BrickType:
         _brickModelIndex: 0
         _level:
           _level: 0
     - Position: {x: 0, y: 2}
       BrickType:
-        _brickModelIndex: 0
+        _brickModelIndex: 1
         _level:
-          _level: 3
-    - Position: {x: 1, y: 4}
+          _level: 0
+    - Position: {x: 1, y: 2}
+      BrickType:
+        _brickModelIndex: 2
+        _level:
+          _level: 0
+    - Position: {x: 2, y: 2}
       BrickType:
         _brickModelIndex: 0
         _level:
           _level: 0
-    - Position: {x: 2, y: 4}
-      BrickType:
-        _brickModelIndex: 0
-        _level:
-          _level: 1

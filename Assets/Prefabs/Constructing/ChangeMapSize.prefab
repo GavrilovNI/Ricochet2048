@@ -76,7 +76,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1311257218079520410
 MonoBehaviour:
@@ -243,7 +243,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.99215686, g: 0.6339018, b: 0.6117647, a: 0.29411766}
   m_FlipX: 0
@@ -293,6 +293,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abe49ad8e4bbac4e8bde95b523288a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MouseClick:
+    m_PersistentCalls:
+      m_Calls: []
   MouseDown:
     m_PersistentCalls:
       m_Calls: []
@@ -311,6 +314,7 @@ MonoBehaviour:
   MouseOver:
     m_PersistentCalls:
       m_Calls: []
+  _clickDelta: 0.5
 --- !u!1 &1311257218630203705
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +391,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1311257218630203703
 MonoBehaviour:
@@ -554,7 +558,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.61365247, g: 0.990566, b: 0.6557397, a: 0.29411766}
   m_FlipX: 0
@@ -604,6 +608,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abe49ad8e4bbac4e8bde95b523288a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MouseClick:
+    m_PersistentCalls:
+      m_Calls: []
   MouseDown:
     m_PersistentCalls:
       m_Calls: []
@@ -622,6 +629,7 @@ MonoBehaviour:
   MouseOver:
     m_PersistentCalls:
       m_Calls: []
+  _clickDelta: 0.5
 --- !u!1 &1311257219863079471
 GameObject:
   m_ObjectHideFlags: 0

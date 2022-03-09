@@ -33,8 +33,16 @@ public class ChangeSizeButtons : MonoBehaviour
 
     private void Awake()
     {
-        _increaseButton.MouseClick.AddListener(() => Increase.Invoke(_direction));
-        _decreaseButton.MouseClick.AddListener(() => Decrease.Invoke(_direction));
+        _increaseButton.MouseClick.AddListener((mouseButton) =>
+        {
+            if(mouseButton == MouseButton.Left)
+                Increase.Invoke(_direction);
+        });
+        _decreaseButton.MouseClick.AddListener((mouseButton) =>
+        {
+            if(mouseButton == MouseButton.Left)
+                Decrease.Invoke(_direction);
+        });
 
         UpdateRotation();
     }

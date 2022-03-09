@@ -4,6 +4,8 @@ using UnityEngine.Events;
 
 public class BrickLeveler : BrickButton
 {
+    public UnityEvent PickModel;
+
     private Level _level = new Level();
     public Level Level
     {
@@ -17,6 +19,7 @@ public class BrickLeveler : BrickButton
 
     [SerializeField] private TextMeshPro _levelText;
     [SerializeField] private Button2D _removeButton;
+    [SerializeField] private Button2D _pickModelButton;
 
     [SerializeField] private BrickModel _model;
     public int ModelIndex => _model.Index;
@@ -24,19 +27,30 @@ public class BrickLeveler : BrickButton
 
     public void Awake()
     {
-        _removeButton.MouseClick.AddListener(() => Switch?.Invoke());
+        _removeButton.MouseClick.AddListener((mouseButton) =>
+        {
+            if(mouseButton == MouseButton.Left)
+                Switch?.Invoke();
+        });
+        _pickModelButton.MouseClick.AddListener((mouseButton) =>
+        {
+            if(mouseButton == MouseButton.Left)
+                PickModel?.Invoke();
+        });
         UpdateLevelText();
     }
 
     public void Start()
     {
-        SetModel(_model);
+        if(_spawnedModel == null)
+            SetModel(_model);
     }
 
     public void SetModel(BrickModel model)
     {
         if(_spawnedModel != null)
             GameObject.Destroy(_spawnedModel.gameObject);
+        _model = model;
         if(model.IsValid)
         {
             _spawnedModel = model.Spawn();

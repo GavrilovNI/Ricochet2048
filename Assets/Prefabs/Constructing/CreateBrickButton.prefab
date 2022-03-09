@@ -70,9 +70,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.29411766}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -158,7 +158,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 11
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &6371139295672986544
 MonoBehaviour:
@@ -325,6 +325,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abe49ad8e4bbac4e8bde95b523288a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MouseClick:
+    m_PersistentCalls:
+      m_Calls: []
   MouseDown:
     m_PersistentCalls:
       m_Calls: []
@@ -343,6 +346,7 @@ MonoBehaviour:
   MouseOver:
     m_PersistentCalls:
       m_Calls: []
+  _clickDelta: 0.5
 --- !u!114 &3943835403552255450
 MonoBehaviour:
   m_ObjectHideFlags: 0

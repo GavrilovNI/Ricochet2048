@@ -2,15 +2,40 @@
 
 namespace VectorExtensions
 {
+    public enum Coordinate2D
+    {
+        X,
+        Y
+    }
+    public enum Coordinate3D
+    {
+        X = Coordinate2D.X,
+        Y = Coordinate2D.Y,
+        Z
+    }
 
     public static class VectorExtensions
     {
-        public enum Coordinate
+        public static Vector3 Invert(this Vector3 vector, Coordinate3D coordinate)
         {
-            X,
-            Y,
-            Z
+            switch(coordinate)
+            {
+                case Coordinate3D.X:
+                    return new Vector3(-vector.x, vector.y, vector.z);
+                case Coordinate3D.Y:
+                    return new Vector3(vector.x, -vector.y, vector.z);
+                case Coordinate3D.Z:
+                    return new Vector3(vector.x, vector.y, -vector.z);
+                default:
+                    throw new System.NotImplementedException();
+            }
         }
+        public static Vector2 Invert(this Vector2 vector, Coordinate2D coordinate) =>
+            vector.ToV3().Invert((Coordinate3D)coordinate).XY();
+        public static Vector3Int Invert(this Vector3Int vector, Coordinate3D coordinate) =>
+            vector.ToFloat().Invert(coordinate).ToInt();
+        public static Vector2Int Invert(this Vector2Int vector, Coordinate2D coordinate) =>
+            vector.ToFloat().Invert(coordinate).ToInt();
 
         public static Vector3 Mply(this Vector3Int vector, float value) =>
             vector.ToFloat() * value;
@@ -35,23 +60,23 @@ namespace VectorExtensions
             vector.ToFloat().ToV3(z).ToInt();
 
         public static Vector3Int ToV3(this Vector2Int vector,
-            Coordinate coordinateToAdd, float coordinateToAddValue = 0) =>
+            Coordinate3D coordinateToAdd, float coordinateToAddValue = 0) =>
             vector.ToFloat().ToV3(coordinateToAdd, coordinateToAddValue).ToInt();
 
 
         public static Vector3 ToV3(this Vector2 vector, float z = 0) =>
-            vector.ToV3(Coordinate.Z, z);
+            vector.ToV3(Coordinate3D.Z, z);
 
         public static Vector3 ToV3(this Vector2 vector,
-            Coordinate coordinateToAdd, float coordinateToAddValue = 0)
+            Coordinate3D coordinateToAdd, float coordinateToAddValue = 0)
         {
             switch(coordinateToAdd)
             {
-                case Coordinate.X:
+                case Coordinate3D.X:
                     return new Vector3(coordinateToAddValue, vector.x, vector.y);
-                case Coordinate.Y:
+                case Coordinate3D.Y:
                     return new Vector3(vector.x, coordinateToAddValue, vector.y);
-                case Coordinate.Z:
+                case Coordinate3D.Z:
                     return new Vector3(vector.x, vector.y, coordinateToAddValue);
                 default:
                     throw new System.NotImplementedException();

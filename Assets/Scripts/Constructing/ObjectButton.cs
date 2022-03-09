@@ -2,12 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
+
+public enum MouseButton
+{
+    Left = 0,
+    Right = 1,
+    Middle = 2,
+}
 
 public abstract class ObjectButton : MonoBehaviour
 {
-    public UnityEvent MouseClick;
-    public UnityEvent MouseDown;
-    public UnityEvent MouseUp;
+
+    public UnityEvent<MouseButton> MouseClick;
+    public UnityEvent<MouseButton> MouseDown;
+    public UnityEvent<MouseButton> MouseUp;
     public UnityEvent MouseEnter;
     public UnityEvent MouseExit;
     public UnityEvent MouseDrag;
@@ -16,18 +25,20 @@ public abstract class ObjectButton : MonoBehaviour
     [SerializeField] private float _clickDelta = 0.5f;
     private float _lastMouseDownTime;
 
+    private HashSet<MouseButton> _downButtons = new HashSet<MouseButton> ();
+
     private void OnMouseDown()
     {
-        MouseDown?.Invoke();
+        MouseDown?.Invoke(MouseButton.Left);
         _lastMouseDownTime = Time.realtimeSinceStartup;
     }
 
     private void OnMouseUp()
     {
-        MouseUp?.Invoke();
+        MouseUp?.Invoke(MouseButton.Left);
         float currentTime = Time.realtimeSinceStartup;
         if(currentTime - _lastMouseDownTime < _clickDelta)
-            MouseClick?.Invoke();
+            MouseClick?.Invoke(MouseButton.Left);
     }
 
     private void OnMouseEnter()
@@ -48,6 +59,29 @@ public abstract class ObjectButton : MonoBehaviour
     private void OnMouseOver()
     {
         MouseOver?.Invoke();
+
+        MouseButton[] checkButtons = new MouseButton[] { MouseButton.Right, MouseButton.Middle };
+
+        foreach(MouseButton button in checkButtons)
+        {
+            if(Input.GetMouseButtonDown((int)button))
+            {
+                _downButtons.Add(button);
+                MouseDown?.Invoke(button);
+            }
+        }
+    }
+
+    private void Update()
+    {
+        foreach(MouseButton button in _downButtons.ToList())
+        {
+            if(Input.GetMouseButtonUp((int)button))
+            {
+                _downButtons.Remove(button);
+                MouseUp?.Invoke(button);
+            }
+        }
     }
 }
 

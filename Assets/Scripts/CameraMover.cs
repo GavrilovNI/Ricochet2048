@@ -16,6 +16,8 @@ public class CameraMover : MonoBehaviour
     private Camera _camera;
     private Vector3 _oldMousePosition;
 
+    private bool _isFocused;
+
     private Vector3 _mouseDownPosition;
     private bool _buttonDown = false;
     private bool _movedMoreThanDelta = false;
@@ -27,8 +29,16 @@ public class CameraMover : MonoBehaviour
         _oldMousePosition = Input.mousePosition;
     }
 
+    private void OnApplicationFocus(bool focus)
+    {
+        _isFocused = focus;
+    }
+
     private void Update()
     {
+        if(_isFocused == false)
+            return;
+
         if(Input.GetButtonDown(_moveButton))
         {
             _buttonDown = true;

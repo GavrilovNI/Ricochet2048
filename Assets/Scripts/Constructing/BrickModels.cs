@@ -9,4 +9,6 @@ public class BrickModels : ScriptableObject
 
     public int Count => _models.Count;
     public GameObject this[int index] => _models[index];
+
+    public List<GameObject>.Enumerator GetEnumerator() => _models.GetEnumerator();
 }
