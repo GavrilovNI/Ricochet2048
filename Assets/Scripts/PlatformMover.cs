@@ -5,14 +5,14 @@ using VectorExtensions;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Platform))]
-public class PlatformMover : MonoBehaviour
+public class PlatformMover : MonoBehaviour, IPausable
 {
     private Platform _platform;
     private Rigidbody2D _rigidbody;
 
     [SerializeField] private Vector3 _from;
     [SerializeField] private Vector3 _to;
-    [SerializeField, Min(0f)] private float _speed = 3f;
+    [SerializeField, Min(0f)] private float _speed = 2.5f;
 
     private Vector3 MinPosition => _from + Vector3.right * _platform.Width / 2;
     private Vector3 MaxPosition => _to - Vector3.right * _platform.Width / 2;
@@ -20,6 +20,19 @@ public class PlatformMover : MonoBehaviour
     public const string InputAxisName = "Horizontal";
     private float _input = 0;
 
+    private bool _paused = false;
+
+    public float Speed
+    {
+        get => _speed;
+        set
+        {
+            if(value < 0f)
+                throw new System.ArgumentOutOfRangeException(nameof(Speed));
+            else
+                _speed = value;
+        }
+    }
     public Vector3 From
     {
         get => _from;
@@ -31,6 +44,8 @@ public class PlatformMover : MonoBehaviour
         set => _to = value;
     }
 
+    public bool IsPaused => _paused;
+
     private void Awake()
     {
         _platform = GetComponent<Platform>();
@@ -39,11 +54,15 @@ public class PlatformMover : MonoBehaviour
 
     private void Update()
     {
+        if(_paused)
+            return;
         _input = Input.GetAxisRaw(InputAxisName);
     }
 
     private void FixedUpdate()
     {
+        if(_paused)
+            return;
         static bool IsLess(Vector3 a, Vector3 b) =>
             a.x < b.x || a.y < b.y || a.z < b.z;
         static bool IsBigger(Vector3 a, Vector3 b) =>
@@ -72,4 +91,7 @@ public class PlatformMover : MonoBehaviour
 
         _rigidbody.MovePosition(newPosition.XY());
     }
+
+    public void Pause() => _paused = true;
+    public void Continue() => _paused = false;
 }

@@ -8,7 +8,7 @@ public class LevelChooser : MonoBehaviour
     [SerializeField] private List<SavedMap> _levels;
 
     public int LevelsCount => _levels.Count;
-    public int LastMapLoaded { get; private set; } = -1;
+    public int LastLevelLoaded { get; private set; } = -1;
 
     public void StartLevel(int index)
     {
@@ -18,12 +18,31 @@ public class LevelChooser : MonoBehaviour
         SavedMap savedMap = _levels[index];
         _mapLoader.Load(savedMap);
         _mapLoader.StartMap();
-        LastMapLoaded = index;
+        LastLevelLoaded = index;
     }
 
     [ContextMenu("Start first level")]
     public void StartFirstLevel()
     {
+        _mapLoader.ClearMap();
         StartLevel(0);
+    }
+
+    public void SkipLevel()
+    {
+        _mapLoader.ClearMap();
+        LastLevelLoaded++;
+    }
+
+    public void RestartLastLoadedLevel()
+    {
+        _mapLoader.ClearMap();
+        StartLevel(LastLevelLoaded);
+    }
+
+    public void StartNextLevel()
+    {
+        _mapLoader.ClearMap();
+        StartLevel(LastLevelLoaded + 1);
     }
 }

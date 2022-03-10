@@ -29,7 +29,7 @@ public class LevelEditor : MonoBehaviour
 
     private Ball _ballSpawnPosition;
 
-    private LevelSettings Settings => _field.Settings;
+    private FieldSettings Settings => _field.Settings;
     private Dictionary<Vector2Int, BrickButton> _brickButtons = new Dictionary<Vector2Int, BrickButton>();
     private List<ChangeSizeButtons> _changeSizeButtons = new List<ChangeSizeButtons>();
 
@@ -80,7 +80,7 @@ public class LevelEditor : MonoBehaviour
     public void Load(SavedMap map)
     {
         _map.Bricks.Clear();
-        LevelSettings levelSettings = new LevelSettings(map.LevelSettings);
+        FieldSettings levelSettings = new FieldSettings(map.LevelSettings);
         _field.Construct(levelSettings);
         _map.MapSettings = levelSettings.MapSettings;
         RemoveAllButtons();
@@ -103,7 +103,7 @@ public class LevelEditor : MonoBehaviour
     public SavedMap Save()
     {
         SavedMap result = ScriptableObject.CreateInstance<SavedMap>();
-        result.LevelSettings = new LevelSettings(Settings);
+        result.LevelSettings = new FieldSettings(Settings);
         result.SavedLevel = new SavedLevel();
         result.SavedLevel.BrickModels = _brickModels;
         foreach(var button in _brickButtons)

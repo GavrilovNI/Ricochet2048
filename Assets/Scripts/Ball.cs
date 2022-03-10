@@ -7,12 +7,13 @@ using TransformExtensions;
 [RequireComponent(typeof(BallMover))]
 public class Ball : MonoBehaviour
 {
-    public event Action<Level> LevelUpdated;
+    public event Action<Ball, Level> LevelUpdated;
 
     private BallMover _ballMover;
 
     [SerializeField] private Level _level;
     [SerializeField, Min(0f)] private float _radius = 0.15f;
+    [SerializeField] private SpriteRenderer _model;
 
     public Level Level
     {
@@ -20,7 +21,7 @@ public class Ball : MonoBehaviour
         set
         {
             _level = value;
-            LevelUpdated(_level);
+            LevelUpdated(this, _level);
         }
     }
     public float Radius
@@ -38,10 +39,6 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void UpdateRadius()
-    {
-        transform.SetGlobalScale(Vector3.one * _radius * 2f);
-    }
 
     private void Awake()
     {
@@ -60,6 +57,16 @@ public class Ball : MonoBehaviour
     private void OnDisable()
     {
         _ballMover.HittedObject -= OnHittedObject;
+    }
+
+    public void SetColor(Color color)
+    {
+        _model.color = color;
+    }
+
+    private void UpdateRadius()
+    {
+        transform.SetGlobalScale(Vector3.one * _radius * 2f);
     }
 
     private void IncreaseLevel()

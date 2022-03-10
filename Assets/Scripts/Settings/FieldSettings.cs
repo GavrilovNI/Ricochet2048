@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class LevelSettings
+public class FieldSettings
 {
     [SerializeField] private Vector2 _ballSpawnPosition = new Vector2(2, 0);
     [SerializeField] private Vector2 _brickSize = Vector2.one;
@@ -10,6 +10,7 @@ public class LevelSettings
     [SerializeField, Min(0f)] private float _platformSpacingAbove = 0.5f;
     [SerializeField, Min(0f)] private float _platformSpacingUnder = 0.5f;
     [SerializeField, Min(0f)] private float _platformWidth = 1;
+    [SerializeField, Min(0f)] private float _platformSpeed = 2.5f;
     [SerializeField, Min(0.01f)] private float _wallsWidth = 0.05f;
 
     public Vector2 BallSpawnPosition
@@ -73,6 +74,17 @@ public class LevelSettings
                 _platformWidth = value;
         }
     }
+    public float PlatformSpeed
+    {
+        get => _platformSpeed;
+        set
+        {
+            if(value < 0f)
+                throw new System.ArgumentOutOfRangeException(nameof(PlatformSpeed));
+            else
+                _platformSpeed = value;
+        }
+    }
     public float WallsWidth
     {
         get => _wallsWidth;
@@ -87,11 +99,11 @@ public class LevelSettings
 
     public Vector2 MapSize => _mapSizeInBricks * _brickSize;
 
-    public LevelSettings()
+    public FieldSettings()
     {
     }
 
-    public LevelSettings(LevelSettings other)
+    public FieldSettings(FieldSettings other)
     {
         _ballSpawnPosition = other._ballSpawnPosition;
         _brickSize = other._brickSize;

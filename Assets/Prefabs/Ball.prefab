@@ -85,6 +85,7 @@ MonoBehaviour:
   _level:
     _level: 0
   _radius: 0.15
+  _model: {fileID: 5951598658461075087}
 --- !u!114 &7150824619017413160
 MonoBehaviour:
   m_ObjectHideFlags: 0

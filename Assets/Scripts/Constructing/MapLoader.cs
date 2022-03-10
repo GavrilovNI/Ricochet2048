@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Map))]
 [RequireComponent(typeof(MapField))]
 public class MapLoader : MonoBehaviour
 {
+    public UnityEvent LevelCompleted;
+    public UnityEvent LevelFailed;
+
     private Map _map;
     private MapField _mapField;
 
@@ -15,6 +19,21 @@ public class MapLoader : MonoBehaviour
     {
         _map = GetComponent<Map>();
         _mapField = GetComponent<MapField>();
+    }
+
+    private void OnlevelCompleted() => LevelCompleted?.Invoke();
+    private void OnlevelFailed() => LevelFailed?.Invoke();
+
+    private void OnEnable()
+    {
+        _map.Won += OnlevelCompleted;
+        _map.Lost += OnlevelFailed;
+    }
+
+    private void OnDisable()
+    {
+        _map.Won -= OnlevelCompleted;
+        _map.Lost -= OnlevelFailed;
     }
 
     private void Start()
@@ -43,9 +62,6 @@ public class MapLoader : MonoBehaviour
 
     public void ClearMap()
     {
-        if(_map.State == Map.GameState.Cleared)
-            throw new System.InvalidOperationException($"Map is already cleared.");
-
         _map.Clear();
         _mapField.Hide();
     }

@@ -25,7 +25,7 @@ public class BallDrawer : MonoBehaviour
         _text.text = Mathf.Pow(2, _ball.Level).ToString();
     }
 
-    private void OnLevelUpdated(Level _)
+    private void OnLevelUpdated(Ball ball, Level level)
     {
         UpdateText();
     }

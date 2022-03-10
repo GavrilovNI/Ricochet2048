@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6de22351c40c0449bbb1555e0ffda1f, type: 3}
-  m_Name: Map
+  m_Name: 3
   m_EditorClassIdentifier: 
   LevelSettings:
     _ballSpawnPosition: {x: 2, y: -0.5}
     _brickSize: {x: 1, y: 1}
     _mapSettings:
       _ballRadius: 0.15
-      _platformWidth: 0.15
+      _ballSpeed: 3
     _mapSizeInBricks: {x: 4, y: 4}
     _platformSpacingAbove: 1
     _platformSpacingUnder: 0.5
     _platformWidth: 1
+    _platformSpeed: 2.5
     _wallsWidth: 0.05
   SavedLevel:
     _brickModels: {fileID: 11400000, guid: e84281cee65a61b4ea30be4171390824, type: 2}

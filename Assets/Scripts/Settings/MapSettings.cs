@@ -3,8 +3,8 @@ using UnityEngine;
 [System.Serializable]
 public class MapSettings
 {
-    [SerializeField] private float _ballRadius = 0.15f;
-    [SerializeField] private float _platformWidth = 1f;
+    [SerializeField, Min(0f)] private float _ballRadius = 0.15f;
+    [SerializeField, Min(0f)] private float _ballSpeed = 3f;
 
     public float BallRadius
     {
@@ -17,15 +17,15 @@ public class MapSettings
                 _ballRadius = value;
         }
     }
-    public float PlatformWidth
+    public float BallSpeed
     {
-        get => _platformWidth;
+        get => _ballSpeed;
         set
         {
             if(value < 0f)
-                throw new System.ArgumentOutOfRangeException(nameof(PlatformWidth));
+                throw new System.ArgumentOutOfRangeException(nameof(BallSpeed));
             else
-                _platformWidth = value;
+                _ballSpeed = value;
         }
     }
 
@@ -37,7 +37,7 @@ public class MapSettings
     public MapSettings(MapSettings other)
     {
         _ballRadius = other._ballRadius;
-        _platformWidth = other._platformWidth;
+        _ballSpeed = other._ballSpeed;
     }
 }
 

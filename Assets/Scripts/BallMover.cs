@@ -26,6 +26,17 @@ public class BallMover : MonoBehaviour, IPausable
     private bool _paused = false;
 
     public bool IsPaused => _paused;
+    public float Speed
+    {
+        get => _speed;
+        set
+        {
+            if(value < 0f)
+                throw new System.ArgumentOutOfRangeException(nameof(Speed));
+            else
+                _speed = value;
+        }
+    }
 
     private void Awake()
     {
@@ -61,6 +72,10 @@ public class BallMover : MonoBehaviour, IPausable
         HittedObject?.Invoke(collision.gameObject);
     }
 
-    public void Pause() => _paused = true;
+    public void Pause()
+    {
+        _paused = true;
+        _rigidbody.velocity = Vector2.zero;
+    }
     public void Continue() => _paused = false;
 }
