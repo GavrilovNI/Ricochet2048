@@ -77,7 +77,7 @@ public class MapField : MonoBehaviour
         return MapBounds.min + (_settings.BrickSize * (position + Vector2.one * 0.5f)).ToV3();
     }
 
-    public void SpawnBrick(Vector2Int position, Brick brickPrefab, Level level)
+    public Brick SpawnBrick(Vector2Int position, Brick brickPrefab, Level level)
     {
         Vector3 spawnPosition = GetBrickPosition(position);
 
@@ -89,16 +89,18 @@ public class MapField : MonoBehaviour
 
         brick.Level = level;
         _map.Bricks.Add(brick);
+        return brick;
     }
 
     [ContextMenu("Spawn Ball")]
-    public void SpawnBall()
+    public Ball SpawnBall()
     {
         Ball ball = Instantiate(_ballPrefab);
         ball.transform.position = MapBounds.min + _settings.BallSpawnPosition.ToV3();
         ball.transform.rotation = Quaternion.identity;
         ball.Radius = _settings.MapSettings.BallRadius;
         _map.Balls.Add(ball);
+        return ball;
     }
 
     public void Construct(LevelSettings settings)

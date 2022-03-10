@@ -27,6 +27,8 @@ public class LevelEditor : MonoBehaviour
     private BrickModelPicker _modelPicker;
     private Vector2Int _currentModelPickingBrick = -Vector2Int.one;
 
+    private Ball _ballSpawnPosition;
+
     private LevelSettings Settings => _field.Settings;
     private Dictionary<Vector2Int, BrickButton> _brickButtons = new Dictionary<Vector2Int, BrickButton>();
     private List<ChangeSizeButtons> _changeSizeButtons = new List<ChangeSizeButtons>();
@@ -52,22 +54,22 @@ public class LevelEditor : MonoBehaviour
         _modelPicker = Instantiate(_modelPickerPrefab, _editorParent);
         _modelPicker.ModelPicked.AddListener(OnModelPicked);
 
-
         HideModelPicker();
         CreateMissingBrickButtons();
         CreateChangeSizeButtons();
         UpdateCamera();
+        UpdateOnSettingsChanged();
     }
 
     private void OnEnable()
     {
-        if(_editorParent != null)
-            _editorParent.gameObject.SetActive(true);
+        if(_editorParent == null)
+            return;
+
+        _editorParent.gameObject.SetActive(true);
         RemoveInvalidButtons();
         CreateMissingBrickButtons();
-        UpdateButtonSizesAndPositions();
-        UpdateChangeSizeButtons();
-        _field.ReConstruct();
+        UpdateOnSettingsChanged();
     }
 
     private void OnDisable()
@@ -95,6 +97,7 @@ public class LevelEditor : MonoBehaviour
         }
         CreateMissingBrickButtons();
         UpdateChangeSizeButtons();
+        UpdateBallSpawnPosition();
     }
 
     public SavedMap Save()
@@ -150,7 +153,7 @@ public class LevelEditor : MonoBehaviour
         }
 
         CreateMissingBrickButtons();
-        UpdateOnBrickSizeChanged();
+        UpdateOnSettingsChanged();
         HideModelPicker();
     }
     private void DecreaseSize(ChangeSizeButtons.ChangeDirection direction)
@@ -188,7 +191,7 @@ public class LevelEditor : MonoBehaviour
                 MoveAllButtons(Vector2Int.down);
                 break;
         }
-        UpdateOnBrickSizeChanged();
+        UpdateOnSettingsChanged();
         HideModelPicker();
     }
 
@@ -251,6 +254,20 @@ public class LevelEditor : MonoBehaviour
 
         UpdateChangeSizeButtons();
     }
+    
+    private void CreateMissingBrickButtons()
+    {
+        for(int y = 0; y < Settings.MapSizeInBricks.y; y++)
+        {
+            for(int x = 0; x < Settings.MapSizeInBricks.x; x++)
+            {
+                Vector2Int position = new Vector2Int(x, y);
+                if(_brickButtons.ContainsKey(position) == false)
+                    CreateButton(position, _createBrickButtonPrefab);
+            }
+        }
+    }
+
     private void UpdateChangeSizeButtons()
     {
         Bounds bounds = _field.MapBounds;
@@ -279,19 +296,6 @@ public class LevelEditor : MonoBehaviour
             }
         }
     }
-    
-    private void CreateMissingBrickButtons()
-    {
-        for(int y = 0; y < Settings.MapSizeInBricks.y; y++)
-        {
-            for(int x = 0; x < Settings.MapSizeInBricks.x; x++)
-            {
-                Vector2Int position = new Vector2Int(x, y);
-                if(_brickButtons.ContainsKey(position) == false)
-                    CreateButton(position, _createBrickButtonPrefab);
-            }
-        }
-    }
     private void UpdateButtonSizesAndPositions()
     {
         foreach(var button in _brickButtons)
@@ -299,8 +303,29 @@ public class LevelEditor : MonoBehaviour
             SetupButton(button.Value, button.Key);
         }
     }
-    private void UpdateOnBrickSizeChanged()
+    public void UpdateBallSpawnPosition()
     {
+        if(_ballSpawnPosition != null)
+            GameObject.Destroy(_ballSpawnPosition.gameObject);
+
+        //making copy of real ball
+        Ball ball = _field.SpawnBall();
+        _ballSpawnPosition = Instantiate(ball);
+        _map.Balls.Remove(ball);
+
+        _ballSpawnPosition.transform.SetParent(_editorParent);
+        _ballSpawnPosition.gameObject.name = "Ball spawn";
+        BallMover ballMover = _ballSpawnPosition.GetComponent<BallMover>();
+        if(ballMover != null)
+            ballMover.enabled = false;
+    }
+
+    // do not use for field size changing, use IncreaseSize/DecreaseSize
+    private void UpdateOnSettingsChanged()
+    {
+        RemoveInvalidButtons();
+        CreateMissingBrickButtons();
+        UpdateBallSpawnPosition();
         UpdateButtonSizesAndPositions();
         UpdateChangeSizeButtons();
         _field.ReConstruct();
@@ -385,7 +410,7 @@ public class LevelEditor : MonoBehaviour
         _brickButtons.Remove(position);
 
         if(oldButton.Scale != Settings.BrickSize)
-            UpdateOnBrickSizeChanged();
+            UpdateOnSettingsChanged();
 
         bool isLeveler = oldButton is BrickLeveler;
         Button2D.Destroy(oldButton.gameObject);
